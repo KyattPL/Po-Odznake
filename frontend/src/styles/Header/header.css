@@ -18,6 +18,13 @@
     height: 100%;
 }
 
+.header-menu-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif !important;
+    font-weight: 900 !important;
+}
+
 .header-button {
     font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -51,4 +58,8 @@
 
 .header-icon-button {
     font-size: 40px !important;
+}
+
+.MuiMenu-paper {
+    background-color: #36C594 !important;
 }
