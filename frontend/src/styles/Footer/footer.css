@@ -1,0 +1,13 @@
+.footer-toolbar {
+    height: 100px;
+}
+
+.footer-appbar {
+    background-color: #271607 !important;
+}
+
+.footer-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif !important;
+}
