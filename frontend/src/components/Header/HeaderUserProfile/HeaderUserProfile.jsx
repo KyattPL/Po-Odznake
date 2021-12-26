@@ -7,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 function HeaderUserProfile() {
     return (
         <Box sx={{ flexGrow: 0 }} className="header-profile-box">
-            <Tooltip title="Your profile" className="header-profile-box">
+            <Tooltip title="Mój profil" className="header-profile-box">
                 <Button className="header-button">
                     <PersonIcon className="header-icon-button" />
                 </Button>

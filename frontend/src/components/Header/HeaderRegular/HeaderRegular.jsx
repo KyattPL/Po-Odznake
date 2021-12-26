@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 
 import BookIcon from '@mui/icons-material/Book';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
@@ -23,20 +24,28 @@ function HeaderRegular() {
                             {item}
                         </Button>
                     ))}
-                    <Button className="header-button header-button-left">
-                        <BookIcon className="header-icon-button" />
-                    </Button>
-                    <Button className="header-button header-button-left">
-                        <MilitaryTechIcon className="header-icon-button" />
-                    </Button>
+                    <Tooltip title="Książeczka">
+                        <Button className="header-button header-button-left">
+                            <BookIcon className="header-icon-button" />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Odznaki">
+                        <Button className="header-button header-button-left">
+                            <MilitaryTechIcon className="header-icon-button" />
+                        </Button>
+                    </Tooltip>
                 </Box>
                 <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
-                    <Button className="header-button header-button-right">
-                        <TranslateIcon className="header-icon-button" />
-                    </Button>
-                    <Button className="header-button header-button-right">
-                        <SettingsIcon className="header-icon-button" />
-                    </Button>
+                    <Tooltip title="Język">
+                        <Button className="header-button header-button-right">
+                            <TranslateIcon className="header-icon-button" />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Ustawienia">
+                        <Button className="header-button header-button-right">
+                            <SettingsIcon className="header-icon-button" />
+                        </Button>
+                    </Tooltip>
                 </Box>
             </Box>
         </>
