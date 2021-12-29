@@ -11,8 +11,8 @@ function Footer() {
             <AppBar position="static" className="footer-appbar">
                 <Toolbar disableGutters className="footer-toolbar">
                     <Grid container>
-                        <Grid item xs={4} />
-                        <Grid item xs={4}>
+                        <Grid item xs={2} lg={4}/>
+                        <Grid item xs={8} lg={4}>
                             <Grid container>
                                 <Grid item xs={6}>
                                     <Typography align="center" variant="h4" className="footer-text">
@@ -31,7 +31,7 @@ function Footer() {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={4} />
+                        <Grid item xs={2} lg={4}/>
                     </Grid>
                 </Toolbar>
             </AppBar>
