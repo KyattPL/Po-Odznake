@@ -10,9 +10,25 @@
 
 .planner-item {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.planner-item-icon {
+    font-size: 32px !important;
+    margin-right: 5px;
 }
 
 .planner-item-text {
-    font-size: 32px;
+    font-size: 24px !important;
+}
+
+.planner-item-cancel {
+    font-size: 32px !important;
+    color: red;
+    align-self: flex-end !important;
+}
+
+.planner-summary-box {
+    margin-top: 20px;
 }

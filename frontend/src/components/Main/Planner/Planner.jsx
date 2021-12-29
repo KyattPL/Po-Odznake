@@ -4,11 +4,12 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 
 import PlannerItem from "./PlannerItem/PlannerItem";
+import PlannerSummary from "./PlannerSummary/PlannerSummary";
 
 import "../../../styles/Main/Planner/planner.css";
 
 function Planner(props) {
-    
+
     const routePoints = props.points;
 
     return (
@@ -24,6 +25,7 @@ function Planner(props) {
                         }
                     })}
                 </Stack>
+                <PlannerSummary points={3} distance={1.4} altitude={164} />
             </Box>
         </Grid>
     );
