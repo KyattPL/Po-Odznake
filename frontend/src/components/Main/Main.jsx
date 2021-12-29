@@ -9,7 +9,7 @@ function Main() {
     return (
         <Grid item xs={12}>
             <Grid container className="main-container">
-                <Planner />
+                <Planner points={['Test1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6']} />
                 <Map />
             </Grid>
         </Grid>
