@@ -12,7 +12,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 
 const menuItems = ["Odcinki", "Trasy", "Wycieczki", "Książeczka", "Odznaki"];
 
-function HeaderSmall() {
+function HeaderSmall(props) {
 
     const [anchorMenu, setAnchorMenu] = useState(null);
 
@@ -21,7 +21,9 @@ function HeaderSmall() {
     };
 
     const handleCloseMenu = (event) => {
+        const menuItemId = event.currentTarget.id
         setAnchorMenu(null);
+        props.displayModal(menuItemId);
     };
 
     return (
@@ -34,8 +36,8 @@ function HeaderSmall() {
                     keepMounted transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                     open={Boolean(anchorMenu)} onClose={handleCloseMenu} sx={{ display: { xs: 'block', lg: 'none' } }}
                     className="header-menu">
-                    {menuItems.map((item) => (
-                        <MenuItem key={item} onClick={handleCloseMenu}>
+                    {menuItems.map((item, index) => (
+                        <MenuItem key={item} onClick={handleCloseMenu} id={"head-menu-opt-" + index}>
                             <Typography align="center" className="header-menu-text">{item}</Typography>
                         </MenuItem>
                     ))}
