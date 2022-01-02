@@ -19,9 +19,9 @@ function Planner(props) {
                     divider={<Divider orientation="horizontal" flexItem />}>
                     {routePoints.map((point, index) => {
                         switch (index) {
-                            case 0: return <PlannerItem point={point} pos="start" />;
-                            case routePoints.length - 1: return <PlannerItem point={point} pos="end" />;
-                            default: return <PlannerItem point={point} pos="mid" />;
+                            case 0: return <PlannerItem point={point} pos="start" key={index}/>;
+                            case routePoints.length - 1: return <PlannerItem point={point} pos="end" key={index}/>;
+                            default: return <PlannerItem point={point} pos="mid" key={index}/>;
                         }
                     })}
                 </Stack>
