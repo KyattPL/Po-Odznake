@@ -12,7 +12,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 
 const menuItems = ["Odcinki", "Trasy", "Wycieczki", "Książeczka", "Odznaki"];
 
-function HeaderSmall() {
+function HeaderSmall({ displayModal }) {
 
     const [anchorMenu, setAnchorMenu] = useState(null);
 
@@ -21,7 +21,12 @@ function HeaderSmall() {
     };
 
     const handleCloseMenu = (event) => {
+        const menuItemId = event.currentTarget.id;
         setAnchorMenu(null);
+        // Only certain buttons are working
+        if (menuItemId === "head-menu-opt-0" || menuItemId === "head-menu-opt-3") {
+            displayModal(menuItemId);
+        }
     };
 
     return (
@@ -34,8 +39,8 @@ function HeaderSmall() {
                     keepMounted transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                     open={Boolean(anchorMenu)} onClose={handleCloseMenu} sx={{ display: { xs: 'block', lg: 'none' } }}
                     className="header-menu">
-                    {menuItems.map((item) => (
-                        <MenuItem key={item} onClick={handleCloseMenu}>
+                    {menuItems.map((item, index) => (
+                        <MenuItem key={item} onClick={handleCloseMenu} id={"head-menu-opt-" + index}>
                             <Typography align="center" className="header-menu-text">{item}</Typography>
                         </MenuItem>
                     ))}
