@@ -1,15 +1,20 @@
-import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
-function LineSegmentsModal({shouldShow, closeModal}) {
+import "../../../../styles/Header/header_modal.css";
+
+function LineSegmentsModal({ shouldShow, closeModal }) {
     return (
         <Modal open={shouldShow} onClose={closeModal}>
-            <Box>
-                <Typography variant="h4">
-                    Line segments modal!
-                </Typography>
-            </Box>
+            <Fade in={shouldShow}>
+                <Container className="header-modal-box">
+                    <Typography variant="h4">
+                        Line segments modal!
+                    </Typography>
+                </Container>
+            </Fade>
         </Modal>
     );
 }

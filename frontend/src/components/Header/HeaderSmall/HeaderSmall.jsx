@@ -12,7 +12,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 
 const menuItems = ["Odcinki", "Trasy", "Wycieczki", "Książeczka", "Odznaki"];
 
-function HeaderSmall(props) {
+function HeaderSmall({ displayModal }) {
 
     const [anchorMenu, setAnchorMenu] = useState(null);
 
@@ -21,9 +21,12 @@ function HeaderSmall(props) {
     };
 
     const handleCloseMenu = (event) => {
-        const menuItemId = event.currentTarget.id
+        const menuItemId = event.currentTarget.id;
         setAnchorMenu(null);
-        props.displayModal(menuItemId);
+        // Only certain buttons are working
+        if (menuItemId === "head-menu-opt-0" || menuItemId === "head-menu-opt-3") {
+            displayModal(menuItemId);
+        }
     };
 
     return (
