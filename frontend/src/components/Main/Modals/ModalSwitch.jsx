@@ -2,8 +2,7 @@ import BookModal from "./BookModal/BookModal";
 import LineSegmentsModal from "./LineSegmentsModal/LineSegmentsModal";
 import LoginModal from "./LoginModal/LoginModal";
 
-
-function HeaderModals({modalToShow, shouldShow, displayModal}) {
+function ModalSwitch({modalToShow, shouldShow, displayModal}) {
     
     let modalComponent = null;
 
@@ -21,4 +20,4 @@ function HeaderModals({modalToShow, shouldShow, displayModal}) {
     );
 }
 
-export default HeaderModals
+export default ModalSwitch;
