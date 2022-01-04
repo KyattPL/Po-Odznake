@@ -1,0 +1,37 @@
+.close-login-modal-icon {
+    color: red;
+    font-size: 32px !important;
+}
+
+.close-login-modal-button {
+    font-size: large;
+    position: relative;
+    left: calc(100% - 32px);
+    bottom: 10px;
+}
+
+.login-form-container {
+    max-height: calc(100% - 48px);
+    overflow: auto;
+}
+
+.login-message {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+.input-box {
+    width: 90%;
+    align-self: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+.login-form-button {
+    border-radius: 10px;
+}
+
+.login-error-msg {
+    color: red;
+}

@@ -16,7 +16,8 @@ function Map() {
     return (
         <Grid item xs={6} sm={8} md={9} xl={10}>
             <Box className="map-container">
-                <LoadScript googleMapsApiKey="AIzaSyCkgdzygd0uCHq2ZlcefnSQ3zlND-rOAbk">
+                {/* "AIzaSyCkgdzygd0uCHq2ZlcefnSQ3zlND-rOAbk" */}
+                <LoadScript googleMapsApiKey={null}>
                     <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }}
                         center={center} zoom={10} options={{ mapTypeControl: false }}>
 

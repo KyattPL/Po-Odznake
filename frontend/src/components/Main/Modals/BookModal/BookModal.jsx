@@ -3,7 +3,7 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
-import "../../../../styles/Header/header_modal.css";
+import "../../../../styles/Main/Modal/modal.css";
 
 function BookModal({ shouldShow, closeModal }) {
     return (
