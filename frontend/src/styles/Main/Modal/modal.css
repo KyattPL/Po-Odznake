@@ -12,3 +12,15 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
 }
+
+.close-modal-icon {
+    color: red;
+    font-size: 32px !important;
+}
+
+.close-modal-button {
+    font-size: large;
+    position: relative;
+    left: calc(100% - 32px);
+    bottom: 10px;
+}

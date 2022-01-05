@@ -1,15 +1,3 @@
-.close-login-modal-icon {
-    color: red;
-    font-size: 32px !important;
-}
-
-.close-login-modal-button {
-    font-size: large;
-    position: relative;
-    left: calc(100% - 32px);
-    bottom: 10px;
-}
-
 .login-form-container {
     max-height: calc(100% - 48px);
     overflow: auto;
