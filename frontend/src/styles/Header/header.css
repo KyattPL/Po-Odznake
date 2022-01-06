@@ -60,6 +60,6 @@
     font-size: 40px !important;
 }
 
-.MuiMenu-paper {
-    background-color: #36C594 !important;
-}
+#header-menu > div > .MuiMenu-list {
+    background-color: #36C594;
+} 

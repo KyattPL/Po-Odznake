@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import HeaderRegular from "./HeaderSmall/HeaderSmall";
 import HeaderSmall from "./HeaderRegular/HeaderRegular";
 import HeaderUserProfile from "./HeaderUserProfile/HeaderUserProfile";
-import HeaderModals from "./HeaderModals/HeaderModals";
+import ModalSwitch from "../Main/Modals/ModalSwitch";
 
 import "../../styles/Header/header.css";
 
@@ -30,7 +30,7 @@ function Header() {
                     <HeaderUserProfile displayModal={displayModal}/>
                 </Toolbar>
             </AppBar>
-            <HeaderModals modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal}/>
+            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal}/>
         </Grid>
     );
 }
