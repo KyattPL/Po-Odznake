@@ -1,8 +1,8 @@
-from enum import unique
 from sqlalchemy.orm import backref
-from app import db
-from cryptography.fernet import Fernet
-from sqlalchemy_utils import EncryptedType
+from flask_sqlalchemy import SQLAlchemy
+import hashlib
+
+db = SQLAlchemy()
 
 class MountainRoutes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,14 +45,12 @@ class Books(db.Model):
     def __init__(self, serial_number):
         self.serial_number = serial_number
 
-key = Fernet.generate_key()
-
 class Tourists(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_name = db.Column(db.String(30), nullable=False)
     name = db.Column(db.String(30), nullable=False)
     login = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(EncryptedType(db.String, key), nullable=False)
+    password = db.Column(db.String(32), nullable=False)
     email = db.Column(db.String(30), nullable=False, unique=True)
     age = db.Column(db.Integer, nullable=False)
     preferred_lang = db.Column(db.String(30), db.ForeignKey('languages.name'), nullable=True)
@@ -60,11 +58,12 @@ class Tourists(db.Model):
     book = db.relationship('Books', backref=db.backref('tourists',lazy=True), uselist=False)
     
     def __init__(self, name, last_name, login, password, email, age, preferred_lang, book_id):
-        cipher_suite = Fernet(key)
+        sha_engine = hashlib.sha256()
+        sha_engine.update(password.encode(encoding='utf-8'))
         self.name = name
         self.last_name = last_name
         self.login = login
-        self.password = cipher_suite.encrypt(bytes(password, 'utf-8'))
+        self.password = sha_engine.hexdigest()
         self.email = email
         self.age = age
         self.preferred_lang = preferred_lang
