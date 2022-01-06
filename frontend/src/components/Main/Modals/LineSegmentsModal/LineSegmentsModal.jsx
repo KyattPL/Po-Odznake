@@ -3,15 +3,15 @@ import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
-import "../../../../styles/Header/header_modal.css";
+import "../../../../styles/Main/Modal/modal.css";
 
-function LoginModal({ shouldShow, closeModal }) {
+function LineSegmentsModal({ shouldShow, closeModal }) {
     return (
         <Modal open={shouldShow} onClose={closeModal}>
             <Fade in={shouldShow}>
                 <Container className="header-modal-box">
                     <Typography variant="h4">
-                        Login works!
+                        Line segments modal!
                     </Typography>
                 </Container>
             </Fade>
@@ -19,4 +19,4 @@ function LoginModal({ shouldShow, closeModal }) {
     );
 }
 
-export default LoginModal;
+export default LineSegmentsModal;
