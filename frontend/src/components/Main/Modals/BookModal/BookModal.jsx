@@ -23,7 +23,8 @@ function BookModal({ shouldShow, closeModal }) {
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
-                    <BookModalEmptyBook />
+                    {/* <BookModalEmptyBook /> */}
+                    <BookModalTable />
                 </Container>
             </Fade>
         </Modal>

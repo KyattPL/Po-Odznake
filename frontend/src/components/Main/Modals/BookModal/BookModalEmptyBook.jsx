@@ -18,6 +18,9 @@ import "../../../../styles/Main/Modal/book_modal.css";
 
 function BookModalEmptyBook() {
 
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [displayClass, setDisplayClass] = useState("invisible-box");
+
     const [selectedTrip, setSelectedTrip] = useState();
     const [beginDate, setBeginDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
@@ -26,13 +29,27 @@ function BookModalEmptyBook() {
         setSelectedTrip(event.target.value);
     };
 
+    const handleAddEntry = () => {
+        if (isFormVisible) {
+
+        } else {
+            setIsFormVisible(true);
+            setDisplayClass("");
+        }
+    };
+
+    const handleCancelEntry = () => {
+        setIsFormVisible(false);
+        setDisplayClass("invisible-box");
+    }
+
     return (
         <Stack spacing={5} className="empty-book-modal-box">
-            <Typography variant="h2" className="empty-book-modal-text">
+            <Typography variant="h2" className="empty-book-modal-text ">
                 Brak wpisów
             </Typography>
             <Box sx={{ height: '40px' }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }} className={displayClass}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)}
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data rozpoczęcia" />} />
@@ -40,17 +57,17 @@ function BookModalEmptyBook() {
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data zakończenia" />} />
                 </LocalizationProvider>
             </Box>
-            <FormControl className="empty-book-trip-list">
+            <FormControl className={"empty-book-trip-list " + displayClass}>
                 <InputLabel>Wycieczka</InputLabel>
                 <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka">
                     <MenuItem className="empty-book-trip-item" value={1}>pierwsza wycieczka</MenuItem>
                     <MenuItem className="empty-book-trip-item" value={2}>druga wycieczka</MenuItem>
                 </Select>
             </FormControl>
-            <Button variant="contained" className={'empty-book-add-button'}>
+            <Button variant="contained" className="empty-book-add-button" onClick={handleAddEntry}>
                 Dodaj wpis
             </Button>
-            <Button variant="contained" className={'empty-book-cancel-button'}>
+            <Button variant="contained" className={"empty-book-cancel-button " + displayClass} onClick={handleCancelEntry}>
                 Anuluj
             </Button>
         </Stack>

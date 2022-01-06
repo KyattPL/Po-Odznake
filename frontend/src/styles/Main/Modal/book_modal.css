@@ -36,3 +36,27 @@
 .empty-book-trip-item {
     background-color: white !important;
 }
+
+.invisible-box {
+    visibility: hidden;
+}
+
+.book-modal-table-container {
+    overflow: auto;
+    max-height: calc(100% - 48px);
+}
+
+.book-modal-table-header-text {
+    font-weight: 900 !important;
+    font-size: 24px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+#book-modal-table-footer {
+    border-bottom: none;
+}
+
+#book-modal-table-footer > div {
+    flex-direction: column;
+}
