@@ -8,6 +8,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
+import '../../../../styles/Main/Modal/book_modal_footer.css';
+
 function BookModalTableActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -36,7 +38,7 @@ function BookModalTableActions(props) {
                 disabled={page === 0}
                 sx={{ order: 1 }}
             >
-                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+                {theme.direction === 'rtl' ? <LastPageIcon className="table-footer-icon" /> : <FirstPageIcon className="table-footer-icon" />}
             </IconButton>
             <IconButton
                 onClick={handleBackButtonClick}
@@ -44,18 +46,20 @@ function BookModalTableActions(props) {
                 aria-label="previous page"
                 sx={{ order: 2 }}
             >
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                {theme.direction === 'rtl' ? <KeyboardArrowRight className="table-footer-icon" /> : <KeyboardArrowLeft className="table-footer-icon" />}
             </IconButton>
-            <span sx={{ order: 3, display: 'inline' }}>
-                {pageStr}
-            </span>
+            <Box sx={{ order: 3, display: 'inline', height: '100%' }}>
+                <span className="table-footer-text">
+                    {pageStr}
+                </span>
+            </Box>
             <IconButton
                 onClick={handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="next page"
                 sx={{ order: 4 }}
             >
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                {theme.direction === 'rtl' ? <KeyboardArrowLeft className="table-footer-icon" /> : <KeyboardArrowRight className="table-footer-icon" />}
             </IconButton>
             <IconButton
                 onClick={handleLastPageButtonClick}
@@ -63,7 +67,7 @@ function BookModalTableActions(props) {
                 aria-label="last page"
                 sx={{ order: 5 }}
             >
-                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+                {theme.direction === 'rtl' ? <FirstPageIcon className="table-footer-icon" /> : <LastPageIcon className="table-footer-icon" />}
             </IconButton>
         </Box>
     );
