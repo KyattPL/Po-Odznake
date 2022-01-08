@@ -1,49 +1,11 @@
-.empty-book-modal-box {
-    overflow: auto;
-    max-height: calc(100% - 48px);
-}
-
-.empty-book-modal-text {
-    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
-    text-align: center;
-}
-
-.empty-book-add-button {
-    background-color: green !important;
-    width: 50%;
-    align-self: center;
-    flex-shrink: 0;
-    height: 48px;
-    border-radius: 10px !important;
-}
-
-.empty-book-cancel-button {
-    background-color: red !important;
-    width: 50%;
-    align-self: center;
-    flex-shrink: 0;
-    height: 48px;
-    margin-top: 20px !important;
-    border-radius: 10px !important;
-}
-
-.empty-book-trip-list {
-    width: 80%;
-    align-self: center;
-}
-
-.empty-book-trip-item {
-    background-color: white !important;
-}
-
-.invisible-box {
-    visibility: hidden;
-}
-
 .book-modal-table-container {
     overflow: auto;
     max-height: calc(100% - 48px);
+    height: 100%;
+}
+
+.book-modal-table {
+    height: 100%;
 }
 
 .book-modal-table-header-text {
@@ -53,10 +15,44 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
 }
 
+.book-modal-table-number-text {
+    font-weight: 900 !important;
+    font-size: 20px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+.book-modal-table-trip-text {
+    font-weight: 900 !important;
+    font-size: 16px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+.book-modal-table-footer-box {
+    height: 100% !important;
+}
+
 #book-modal-table-footer {
     border-bottom: none;
 }
 
 #book-modal-table-footer > div {
     flex-direction: column;
+    padding: 0;
+    height: 100%;
+}
+
+.book-modal-edit-button {
+    background-color: yellow !important;
+    color: black !important;
+    border: 2px solid black !important;
+    border-radius: 10px !important;
+}
+
+.book-modal-delete-button {
+    background-color: rgb(170, 27, 27) !important;
+    color: black !important;
+    border: 2px solid black !important;
+    border-radius: 10px !important;
 }

@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import "../../../../styles/Main/Modal/book_modal.css";
+import "../../../../styles/Main/Modal/empty_book_modal.css";
 
 function BookModalEmptyBook() {
 
