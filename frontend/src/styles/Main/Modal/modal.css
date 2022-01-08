@@ -18,6 +18,11 @@
     font-size: 32px !important;
 }
 
+.change-modal-icon {
+    font-size: 32px !important;
+    color: green;
+}
+
 .close-modal-button {
     font-size: large;
     position: relative;
