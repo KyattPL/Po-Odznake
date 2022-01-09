@@ -47,7 +47,7 @@ function HeaderSmall({ displayModal }) {
                 </Menu>
             </Box>
             <Box sx={{ flexGrow: 1, justifyContent: 'center', display: { xs: 'flex', lg: 'none' } }} className="header-logo-box">
-                <img src="logo_jaspyn_tekst.png" alt="Logo of the website" />
+                <img src="/static/logo_jaspyn_tekst.png" alt="Logo of the website" />
             </Box>
             <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { xs: 'flex', lg: 'none' } }} className="header-button-box">
                 <Button className="header-button header-button-right">

@@ -22,7 +22,7 @@ function HeaderRegular({ displayModal }) {
     return (
         <>
             <Box sx={{ mr: 2, display: { xs: 'none', lg: 'flex' } }} className="header-logo-box">
-                <img src="logo_jaspyn_tekst.png" alt="Logo of the website" />
+                <img src="/static/logo_jaspyn_tekst.png" alt="Logo of the website" />
             </Box>
             <Box sx={{ flexGrow: 1, justifyContent: 'space-between', display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
