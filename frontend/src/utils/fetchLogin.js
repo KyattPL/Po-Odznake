@@ -1,5 +1,5 @@
 export default async function fetchLogin(login, pass) {
-    await fetch("/auth", {
+    await fetch("http://localhost:5000/auth", {
         body: JSON.stringify({ username: login, password: pass }),
         method: "POST",
         headers: {

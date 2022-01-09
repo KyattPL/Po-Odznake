@@ -11,7 +11,7 @@ import ModalSwitch from "../Main/Modals/ModalSwitch";
 
 import "../../styles/Header/header.css";
 
-function Header() {
+function Header({ isLoggedIn }) {
 
     const [modalToShow, setModalToShow] = useState(null);
     const [shouldShowmodal, setShouldShowModal] = useState(false);
@@ -25,12 +25,12 @@ function Header() {
         <Grid item xs={12}>
             <AppBar position="static" className="header-appbar">
                 <Toolbar disableGutters className="header-toolbar">
-                    <HeaderSmall displayModal={displayModal}/>
-                    <HeaderRegular displayModal={displayModal}/>
-                    <HeaderUserProfile displayModal={displayModal}/>
+                    <HeaderSmall displayModal={displayModal} />
+                    <HeaderRegular displayModal={displayModal} />
+                    <HeaderUserProfile displayModal={displayModal} isLoggedIn={isLoggedIn} />
                 </Toolbar>
             </AppBar>
-            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal}/>
+            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal} />
         </Grid>
     );
 }
