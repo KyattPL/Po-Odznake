@@ -7,13 +7,13 @@ import Grid from "@mui/material/Grid";
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
 
     return (
         <div className="App">
             <Grid container>
-                <Header isLoggedIn={isLoggedIn} />
+                <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} setAccessToken={setAccessToken} />
                 <Main />
                 <Footer />
             </Grid>

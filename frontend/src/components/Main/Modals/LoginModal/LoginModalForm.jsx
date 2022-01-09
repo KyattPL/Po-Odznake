@@ -10,7 +10,7 @@ import fetchLogin from "../../../../utils/fetchLogin";
 
 import "../../../../styles/Main/Modal/login_modal.css";
 
-function LoginModalForm() {
+function LoginModalForm({ setAccessToken, setIsLoggedIn, closeModal }) {
 
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
@@ -25,8 +25,15 @@ function LoginModalForm() {
     };
 
     const handleLogin = async () => {
-        await fetchLogin(login, password);
-        setIsError(true);
+        const resp = await fetchLogin(login, password);
+        if (resp['status_code'] == 401) {
+            return;
+        } else {
+            console.log("here");
+            setAccessToken(resp["access_token"]);
+            setIsLoggedIn(true);
+            closeModal();
+        }
     }
 
     const errMsg = isError === true ? <Typography variant="h5"

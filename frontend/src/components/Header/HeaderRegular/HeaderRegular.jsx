@@ -7,7 +7,7 @@ import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TranslateIcon from '@mui/icons-material/Translate';
 
-function HeaderRegular({ displayModal }) {
+function HeaderRegular({ displayModal, isLoggedIn }) {
 
     const menuItems = ["Odcinki", "Trasy", "Wycieczki"];
 
@@ -25,7 +25,7 @@ function HeaderRegular({ displayModal }) {
                 <img src="/static/logo_jaspyn_tekst.png" alt="Logo of the website" />
             </Box>
             <Box sx={{ flexGrow: 1, justifyContent: 'space-between', display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
+                {isLoggedIn ? <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
 
                     {menuItems.map((item, index) => (
                         <Button key={item} className="header-button header-button-left" id={"head-menu-opt-" + index} onClick={menuItemClick}>
@@ -42,7 +42,7 @@ function HeaderRegular({ displayModal }) {
                             <MilitaryTechIcon className="header-icon-button" />
                         </Button>
                     </Tooltip>
-                </Box>
+                </Box> : null}
                 <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { xs: 'none', lg: 'flex' } }} className="header-button-box">
                     <Tooltip title="Język">
                         <Button className="header-button header-button-right" id="head-menu-opt-5">

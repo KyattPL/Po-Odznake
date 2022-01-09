@@ -19,12 +19,12 @@ function HeaderUserProfile({ displayModal, isLoggedIn }) {
         <Box sx={{ flexGrow: 0 }} className="header-profile-box">
             {isLoggedIn ?
                 <Tooltip title="Mój profil" className="header-profile-box">
-                    <Button className="header-button" onClick={showLoginModal}>
+                    <Button className="header-button" onClick={showLogoutModal}>
                         <PersonIcon className="header-icon-button" />
                     </Button>
                 </Tooltip>
                 :
-                <Button className="header-button" onClick={showLogoutModal}>
+                <Button className="header-button header-button-box" onClick={showLoginModal}>
                     <Typography variant="h6">
                         Zaloguj się
                     </Typography>
