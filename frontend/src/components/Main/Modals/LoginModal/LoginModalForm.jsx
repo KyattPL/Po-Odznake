@@ -6,6 +6,8 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import fetchLogin from "../../../../utils/fetchLogin";
+
 import "../../../../styles/Main/Modal/login_modal.css";
 
 function LoginModalForm() {
@@ -13,9 +15,6 @@ function LoginModalForm() {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [isError, setIsError] = useState(false);
-
-    const loginInput = useRef();
-    const passwordInput = useRef();
 
     const handleLoginChange = (event) => {
         setLogin(event.currentTarget.value);
@@ -25,7 +24,8 @@ function LoginModalForm() {
         setPassword(event.currentTarget.value);
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        await fetchLogin(login, password);
         setIsError(true);
     }
 
@@ -39,10 +39,10 @@ function LoginModalForm() {
             </Typography>
             <TextField required id="username-input" className="input-box"
                 variant="outlined" placeholder="Nazwa użytkownika" error={isError}
-                value={login} onChange={handleLoginChange} ref={loginInput} />
+                value={login} onChange={handleLoginChange} />
             <TextField required id="password-input" variant="outlined" className="input-box"
                 placeholder="Hasło" type="password" error={isError}
-                value={password} onChange={handlePasswordChange} ref={passwordInput} />
+                value={password} onChange={handlePasswordChange} />
             {errMsg}
             <Button variant="contained" className="input-box login-form-button" onClick={handleLogin}>
                 Zaloguj
