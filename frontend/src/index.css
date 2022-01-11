@@ -6,3 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* TODO: Kolorystyka miejscami niespójna (głównie a może i tylko między przyciskami) */
+/* TODO: Nwm jak z wielkością wszystkiego, trzeba przetestować i się zdecydować,
+  głównie chodzi o modale (dla loginu wydaje się za duży a dla książeczki lekko za mały jak już)
+  oraz o pasek boczny (to jak się zmienia dla różnych breakpointów)
+*/

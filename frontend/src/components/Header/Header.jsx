@@ -14,10 +14,10 @@ import "../../styles/Header/header.css";
 function Header({ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }) {
 
     const [modalToShow, setModalToShow] = useState(null);
-    const [shouldShowmodal, setShouldShowModal] = useState(false);
+    const [shouldShowModal, setShouldShowModal] = useState(false);
 
     const displayModal = (menuItemId) => {
-        setShouldShowModal(!shouldShowmodal);
+        setShouldShowModal(!shouldShowModal);
         setModalToShow(menuItemId);
     };
 
@@ -30,7 +30,7 @@ function Header({ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }) {
                     <HeaderUserProfile displayModal={displayModal} isLoggedIn={isLoggedIn} />
                 </Toolbar>
             </AppBar>
-            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal}
+            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowModal} displayModal={displayModal}
                 setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} setAccessToken={setAccessToken} />
         </Grid>
     );

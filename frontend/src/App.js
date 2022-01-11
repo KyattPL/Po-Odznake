@@ -14,7 +14,7 @@ function App() {
         <div className="App">
             <Grid container>
                 <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} setAccessToken={setAccessToken} />
-                <Main />
+                <Main isLoggedIn={isLoggedIn} />
                 <Footer />
             </Grid>
         </div>

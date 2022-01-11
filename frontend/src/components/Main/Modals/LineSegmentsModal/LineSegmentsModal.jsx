@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import "../../../../styles/Main/Modal/modal.css";
 
+// TODO: zaimplementować LineSegmentsModal
 function LineSegmentsModal({ shouldShow, closeModal }) {
     return (
         <Modal open={shouldShow} onClose={closeModal}>

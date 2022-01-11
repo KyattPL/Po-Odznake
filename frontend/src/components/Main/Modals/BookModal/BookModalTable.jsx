@@ -14,31 +14,33 @@ import TableRow from '@mui/material/TableRow';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 
+import AddBookEntry from "./AddBookEntry";
 import BookModalTableActions from './BookModalTableActions';
 import '../../../../styles/Main/Modal/book_modal.css';
 
-function createData(entryDate, startDate, endDate, trip, points) {
-    return { entryDate, startDate, endDate, trip, points };
+function createData(tripID, entryDate, startDate, endDate, trip, points) {
+    return { tripID, entryDate, startDate, endDate, trip, points };
 }
 
 const rows = [
-    createData('23.07.2021', '17.07.2021', '20.07.2021', 'Karpacz Górny (Wang) -> Śnieżka', 16),
-    createData('20.04.2021', '', '', 'Schronisko PTTK Kochanówka -> Schronisko Pod Łabskim Szczytem', 11),
-    createData('10.12.2020', '10.12.2020', '10.12.2020', 'Marciszów -> Raszów', 13),
-    createData('23.09.2020', '', '', 'Radków -> Schronisku na Szczelińcu', 12)
-].sort((a, b) => (a.entryDate < b.entryDate ? -1 : 1));
+    createData(4, '23.07.2021', '17.07.2021', '20.07.2021', 'Karpacz Górny (Wang) -> Śnieżka', 16),
+    createData(3, '20.04.2021', '', '', 'Schronisko PTTK Kochanówka -> Schronisko Pod Łabskim Szczytem', 11),
+    createData(2, '10.12.2020', '10.12.2020', '10.12.2020', 'Marciszów -> Raszów', 13),
+    createData(1, '23.09.2020', '', '', 'Radków -> Schronisku na Szczelińcu', 12)
+].sort((a, b) => (a.tripID < b.tripID ? 1 : -1));
 
 function BookModalTable() {
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
-    // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+    // TODO: zaimplementować EDIT i DELETE button
 
     return (
         <TableContainer component={Box} className="book-modal-table-container">
@@ -55,11 +57,16 @@ function BookModalTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {page === 0
+                        ? <TableRow>
+                            <AddBookEntry />
+                        </TableRow> : null}
                     {(rowsPerPage > 0
                         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : rows
                     ).map((row) => (
-                        <TableRow key={row.name}>
+                        // TODO: użyteczne będzie bardzo tripID po stronie frontendowej
+                        <TableRow key={row.tripID}>
                             <TableCell sx={{ width: '150px' }} component="th" scope="row" className="book-modal-table-number-text">
                                 {row.entryDate}
                             </TableCell>

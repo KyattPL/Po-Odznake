@@ -32,3 +32,12 @@
 .planner-summary-box {
     margin-top: 20px;
 }
+
+.planner-summary-button {
+    width: 150px;
+    left: calc((100% - 150px) / 2);
+    background-color: green !important;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    margin-bottom: 20px !important;
+}

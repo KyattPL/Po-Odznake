@@ -15,6 +15,7 @@ const menuItems = ["Odcinki", "Trasy", "Wycieczki", "Książeczka", "Odznaki"];
 function HeaderSmall({ displayModal, isLoggedIn }) {
 
     const [anchorMenu, setAnchorMenu] = useState(null);
+    const logoJustify = isLoggedIn ? 'center' : 'flex-start';
 
     const handleOpenMenu = (event) => {
         setAnchorMenu(event.currentTarget);
@@ -46,7 +47,7 @@ function HeaderSmall({ displayModal, isLoggedIn }) {
                     ))}
                 </Menu>
             </Box> : null}
-            <Box sx={{ flexGrow: 1, justifyContent: 'center', display: { xs: 'flex', lg: 'none' } }} className="header-logo-box">
+            <Box sx={{ flexGrow: 1, justifyContent: logoJustify, display: { xs: 'flex', lg: 'none' } }} className="header-logo-box">
                 <img src="/static/logo_jaspyn_tekst.png" alt="Logo of the website" />
             </Box>
             <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { xs: 'flex', lg: 'none' } }} className="header-button-box">

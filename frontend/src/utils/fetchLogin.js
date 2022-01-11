@@ -6,9 +6,9 @@ export default async function fetchLogin(login, pass) {
             'Content-Type': 'application/json'
         }
     }).then(res => res.json()).then(result => {
-        console.log(result);
         return result;
     }).catch(err => {
         console.error(err);
+        return err;
     });
 }

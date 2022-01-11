@@ -7,6 +7,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import FlagIcon from '@mui/icons-material/Flag';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 
+// TODO: Zaimplementować usuwanie punktów z trasy
 function PlannerItem(props) {
 
     let icon = null;
