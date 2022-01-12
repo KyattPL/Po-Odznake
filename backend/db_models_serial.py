@@ -26,6 +26,9 @@ class SegmentsSchema(ma.Schema):
     starting_point = ma.Nested(PointsSchema)
     ending_point = ma.Nested(PointsSchema)
 
+class BookEntriesSchema(ma.Schema):
+    pass
+
 class Schemas():
     trial_color_schema = TrialColorsSchema()
     trial_colors_schema = TrialColorsSchema(many=True)

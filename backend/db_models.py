@@ -109,7 +109,7 @@ class Segments(db.Model):
     description = db.Column(db.String(100), nullable=True)
     is_active = db.Column(db.Boolean, nullable=False)
     distance = db.Column(db.Integer, nullable=False)
-    trial_color = db.Column(db.String(30), db.ForeignKey('languages.name'), nullable=True)
+    trial_color = db.Column(db.String(30), db.ForeignKey('trial_colors.name'), nullable=True)
     starting_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     ending_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     tourist_id = db.Column(db.Integer, db.ForeignKey('tourists.id'), nullable=True)
