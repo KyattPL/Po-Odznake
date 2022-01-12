@@ -21,7 +21,7 @@ function BookModalEmptyBook() {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [displayClass, setDisplayClass] = useState("invisible-box");
 
-    const [selectedTrip, setSelectedTrip] = useState();
+    const [selectedTrip, setSelectedTrip] = useState('');
     const [beginDate, setBeginDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 

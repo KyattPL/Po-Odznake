@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import Box from '@mui/material/Box';
-import Button from "@mui/material/Button";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,11 +10,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditIcon from '@mui/icons-material/Edit';
-
 import AddBookEntry from "./AddBookEntry";
+import BookEntry from "./BookEntry";
 import BookModalTableActions from './BookModalTableActions';
+
 import '../../../../styles/Main/Modal/book_modal.css';
 
 function createData(tripID, entryDate, startDate, endDate, trip, points) {
@@ -66,33 +64,7 @@ function BookModalTable() {
                         : rows
                     ).map((row) => (
                         // TODO: użyteczne będzie bardzo tripID po stronie frontendowej
-                        <TableRow key={row.tripID}>
-                            <TableCell sx={{ width: '150px' }} component="th" scope="row" className="book-modal-table-number-text">
-                                {row.entryDate}
-                            </TableCell>
-                            <TableCell align="left" className="book-modal-table-number-text">
-                                {row.startDate}
-                            </TableCell>
-                            <TableCell align="left" className="book-modal-table-number-text">
-                                {row.endDate}
-                            </TableCell>
-                            <TableCell className="book-modal-table-trip-text">
-                                {row.trip}
-                            </TableCell>
-                            <TableCell className="book-modal-table-number-text" align="right">
-                                {row.points}
-                            </TableCell>
-                            <TableCell>
-                                <Button className="book-modal-edit-button">
-                                    <EditIcon />
-                                </Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button className="book-modal-delete-button">
-                                    <CancelIcon />
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                        <BookEntry row={row} />
                     ))}
 
                     {emptyRows > 0 && (

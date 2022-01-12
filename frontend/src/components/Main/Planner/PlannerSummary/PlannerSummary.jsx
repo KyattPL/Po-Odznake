@@ -10,17 +10,24 @@ function PlannerSummary({ points, distance, altitude, isLoggedIn }) {
 
     const [showSaveModal, setShowSaveModal] = useState(false);
 
-    const displayModal = () => {
-        setShowSaveModal(!showSaveModal);
+    const openModal = () => {
+        setShowSaveModal(true);
+    }
+
+    const closeModal = () => {
+        setShowSaveModal(false);
     };
 
     return (
         <Box className="planner-summary-box">
             {isLoggedIn ?
-                <Button variant="contained" className="planner-summary-button" onClick={displayModal}>
-                    Zapisz trasę
-                    <SaveRouteModal shouldShow={showSaveModal} closeModal={displayModal} />
-                </Button> : null
+                <>
+                    <Button variant="contained" className="planner-summary-button" onClick={openModal}>
+                        Zapisz trasę
+                    </Button>
+                    <SaveRouteModal shouldShow={showSaveModal} closeModal={closeModal} />
+                </>
+                : null
             }
             <Typography variant="h6" align="center">Suma punktów za trasę: {points}</Typography>
             <Typography variant="h6" align="center">Odległość trasy: {distance}km</Typography>

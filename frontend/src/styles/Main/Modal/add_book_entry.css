@@ -11,14 +11,14 @@
 
 .confirm-entry-button {
     background-color: green !important;
-    border-radius: 10px;
-    border: 2px solid black;
-    color: black;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
 }
 
 .cancel-entry-button {
     background-color: rgb(170 27 27) !important;
-    border-radius: 10px;
-    border: 2px solid black;
-    color: black;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
 }

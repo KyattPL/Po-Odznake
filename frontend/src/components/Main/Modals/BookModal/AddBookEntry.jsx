@@ -9,11 +9,9 @@ import "../../../../styles/Main/Modal/add_book_entry.css";
 
 function AddBookEntry() {
 
-    const [buttonInvisClass, setButtonInvisClass] = useState("");
     const [isFormOpen, setIsFormOpen] = useState(false);
 
     const handleOpenEntryForm = () => {
-        setButtonInvisClass("invisible-box");
         setIsFormOpen(true);
     };
 

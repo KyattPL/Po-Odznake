@@ -15,6 +15,8 @@ import TextField from "@mui/material/TextField";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from '@mui/icons-material/Done';
 
+import "../../../../styles/Main/Modal/add_book_entry.css";
+
 function AddBookEntryForm({ setIsFormOpen }) {
 
     const [beginDate, setBeginDate] = useState(null);
