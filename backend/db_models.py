@@ -4,6 +4,7 @@ import hashlib
 
 db = SQLAlchemy()
 
+
 class MountainRoutes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     segments_in_route = db.relationship('SegmentsInRoutes', backref=db.backref('mountainroutes',lazy=True))
@@ -27,17 +28,6 @@ class GeoPoints(db.Model):
         self.exists = exists
         self.height = height
 
-class TrialColors(db.Model):
-    name = db.Column(db.String(30), primary_key=True)
-
-    def __init__(self, name):
-        self.name = name
-
-class Languages(db.Model):
-    name = db.Column(db.String(30), primary_key=True)
-
-    def __init__(self, name):
-        self.name = name
 
 class Books(db.Model):
     serial_number = db.Column(db.Integer, primary_key=True)
@@ -50,10 +40,9 @@ class Tourists(db.Model):
     last_name = db.Column(db.String(30), nullable=False)
     name = db.Column(db.String(30), nullable=False)
     login = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(db.String(32), nullable=False)
+    password = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(30), nullable=False, unique=True)
     age = db.Column(db.Integer, nullable=False)
-    preferred_lang = db.Column(db.String(30), db.ForeignKey('languages.name'), nullable=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.serial_number'))
     book = db.relationship('Books', backref=db.backref('tourists',lazy=True), uselist=False)
     
@@ -69,38 +58,20 @@ class Tourists(db.Model):
         self.preferred_lang = preferred_lang
         self.book_id = book_id
 
-       
-
 
 class Trips(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    pred_num_of_days = db.Column(db.Integer, nullable=True)
-    routes_in_trip = db.relationship('RoutesInTrips', backref=db.backref('trips', lazy=True))
+    starting_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
+    ending_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+    
+    starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('trips', lazy=True))
+    ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('trips2', lazy=True))
 
-    def __init__(self, pred_num_of_days):
-        self.pred_num_of_days = pred_num_of_days
-
-class TripsOfTourists(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    tourist_id = db.Column(db.Integer, db.ForeignKey('tourists.id'),nullable=False)
-    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
-
-    tourist = db.relationship('Tourists', backref=db.backref('tripsoftourists', lazy=True))
-    trip = db.relationship('Trips', backref=db.backref('tripsoftourists', lazy=True))
-
-    def __init__(self, tourist_id, trip_id):
-        self.tourist_id = tourist_id
-        self.trip_id = trip_id
-
-class RoutesInTrips(db.Model):
-    route_id = db.Column(db.Integer, db.ForeignKey('mountain_routes.id'), primary_key=True, autoincrement=False)
-    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), primary_key=True, autoincrement=False)
-    route = db.relationship('MountainRoutes', backref=db.backref('routesintrips', lazy=True))
-    trip = db.relationship('Trips', backref=db.backref('routesintrips', lazy=True))
-
-    def __init__(self, route_id, segment_id):
-        self.route_id = route_id
-        self.segment_id = segment_id
+    def __init__(self, starting_point_id, ending_point_id):
+        self.starting_point_id = starting_point_id
+        self.ending_point_id = ending_point_id
 
 
 class Segments(db.Model):
@@ -109,7 +80,7 @@ class Segments(db.Model):
     description = db.Column(db.String(100), nullable=True)
     is_active = db.Column(db.Boolean, nullable=False)
     distance = db.Column(db.Integer, nullable=False)
-    trial_color = db.Column(db.String(30), db.ForeignKey('trial_colors.name'), nullable=True)
+    #trial_color = db.Column(db.String(30), db.ForeignKey('trial_colors.name'), nullable=True)
     starting_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     ending_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     tourist_id = db.Column(db.Integer, db.ForeignKey('tourists.id'), nullable=True)
@@ -128,9 +99,11 @@ class Segments(db.Model):
         self.tourist_id = tourist_id
 
 class BooksEntries(db.Model):
-    trip_of_tourist_id = db.Column(db.Integer, db.ForeignKey('trips_of_tourists.id'), primary_key=True, autoincrement=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.serial_number'), primary_key=True, autoincrement=False)
+    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), primary_key=True, autoincrement=False)
     entry_date = db.Column(db.Date, nullable=True)
+
+    trip = db.relationship("Trips", backref=db.backref("books_entries", lazy=True))
 
     def __init__(self, trip_of_tourist_id, book_id, entry_date):
         self.trip_of_tourist_id = trip_of_tourist_id

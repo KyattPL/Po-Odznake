@@ -1,6 +1,7 @@
 from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import safe_str_cmp
 from queries import DBAccess
+from flask_login import LoginManager, login_user, logout_user, current_user
 import hashlib
 
 def authenticate(username, password):

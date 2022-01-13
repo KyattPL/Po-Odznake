@@ -113,7 +113,7 @@ class DBAccess():
     @staticmethod
     def get_user_book_entries(usr_id):
         try:
-            return Tourists.query.filter(Tourists.book_id == usr_id).join(Books, Tourists.book_id == Books.serial_number).join(BooksEntries, BooksEntries.book_id == Books.serial_number).join(TripsOfTourists, TripsOfTourists.id == BooksEntries.trip_of_tourist_id).join(Trips, Trips.id == TripsOfTourists.trip_id).join(RoutesInTrips, Trips.id == RoutesInTrips.trip_id).join(MountainRoutes, MountainRoutes.id == RoutesInTrips.route_id).join(SegmentsInRoutes, SegmentsInRoutes.route_id == MountainRoutes.id).join(Segments, Segments.id == SegmentsInRoutes.segment_id).add_columns(BooksEntries.entry_date, Segments.points, Segments.starting_point_id, Segments.ending_point_id).all()
+            return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).all()
         except sqlalchemy.exc.OperationalError:
             logging.error("Database connection lost!")
 

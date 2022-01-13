@@ -2,9 +2,6 @@ from flask_marshmallow import Marshmallow
 
 ma = Marshmallow()
 
-class TrialColorsSchema(ma.Schema):
-    class Meta:
-        fields = ('name',)
 
 class BooksSchema(ma.Schema):
     class Meta:
@@ -26,12 +23,21 @@ class SegmentsSchema(ma.Schema):
     starting_point = ma.Nested(PointsSchema)
     ending_point = ma.Nested(PointsSchema)
 
+class TripsSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'starting_point', 'ending_point', 'start_date', 'end_date')
+
+    starting_point = ma.Nested(PointsSchema)
+    ending_point = ma.Nested(PointsSchema)
+
 class BookEntriesSchema(ma.Schema):
-    pass
+    class Meta:
+        fields = ('id', 'trip', 'entry_date')
+    
+    trip = ma.Nested(TripsSchema)
+    
 
 class Schemas():
-    trial_color_schema = TrialColorsSchema()
-    trial_colors_schema = TrialColorsSchema(many=True)
     book_schema = BooksSchema()
     books_schema = BooksSchema(many=True)
     tourist_schema = TouristsSchema()
@@ -40,5 +46,9 @@ class Schemas():
     points_schema = PointsSchema(many=True)
     segment_schema = SegmentsSchema()
     segments_schema = SegmentsSchema(many=True)
+    trip_schema = TripsSchema()
+    trips_schema = TripsSchema(many=True)
+    book_entry_schema = BookEntriesSchema()
+    book_entries_schema = BookEntriesSchema(many=True)
 
 
