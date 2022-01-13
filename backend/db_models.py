@@ -63,9 +63,6 @@ class Trips(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     starting_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     ending_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
-    end_date = db.Column(db.Date, nullable=False)
-    
     starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('trips', lazy=True))
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('trips2', lazy=True))
 
@@ -102,7 +99,9 @@ class BooksEntries(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.serial_number'), primary_key=True, autoincrement=False)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), primary_key=True, autoincrement=False)
     entry_date = db.Column(db.Date, nullable=True)
-
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+    
     trip = db.relationship("Trips", backref=db.backref("books_entries", lazy=True))
 
     def __init__(self, trip_of_tourist_id, book_id, entry_date):
