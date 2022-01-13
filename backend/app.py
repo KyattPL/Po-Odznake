@@ -2,7 +2,7 @@ from flask import Flask
 from routes import routes
 from db_models import db
 from db_models_serial import ma
-from auth import jwt
+from auth import login_manager
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app.secret_key = 'secret string'
 app.register_blueprint(routes)
 
 ma.init_app(app)
-jwt.init_app(app)
+login_manager.init_app(app)
 db.init_app(app)
 
 if __name__ == '__main__':
