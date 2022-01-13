@@ -39,7 +39,9 @@ def get_current_identity():
     return {"user_id":current_user.get_id()} if current_user.get_id() != None and current_user.is_authenticated() else {"user_id": None}
 
 @routes.route("/logout", methods = ['POST'])
+@login_required
 def logout():
     user = current_user
     user.authenticated = False
     logout_user()
+    return {"logout_successfull":True}
