@@ -1,0 +1,41 @@
+.save-route-modal-box {
+    max-width: 1200px;
+    width: 90vw;
+    height: 50%;
+    position: relative;
+    top: 15%;
+    padding: 10px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 10px;
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+}
+
+.save-route-h2 {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+    padding-top: 20px;  
+}
+
+.save-route-confirm {
+    background-color: green !important;
+    width: 30%;
+    border: 2px solid black !important;
+    border-radius: 10px !important;
+    position: absolute;
+    top: calc(100% - 200px);
+    left: 10%;
+}
+
+.save-route-cancel {
+    background-color: red !important;
+    width: 30%;
+    border: 2px solid black !important;
+    border-radius: 10px !important;
+    position: absolute;
+    top: calc(100% - 200px);
+    left: 30%;
+}

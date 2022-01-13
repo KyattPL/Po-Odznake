@@ -8,9 +8,9 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
-import '../../../../styles/Main/Modal/book_modal_footer.css';
+import "../../../styles/Main/Modal/table_modal_footer.css";
 
-function BookModalTableActions(props) {
+function ModalTableActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
     const pageStr = (page + 1) + ' / ' + Math.ceil(count / rowsPerPage);
@@ -73,10 +73,10 @@ function BookModalTableActions(props) {
     );
 }
 
-BookModalTableActions.propTypes = {
+ModalTableActions.propTypes = {
     count: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
 };
 
-export default BookModalTableActions;
+export default ModalTableActions;

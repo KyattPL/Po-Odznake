@@ -1,0 +1,47 @@
+.line-segments-empty-modal-box {
+    overflow: auto;
+    max-height: calc(100% - 48px);
+}
+
+.line-segments-empty-modal-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue' !important;
+    text-align: center;
+}
+
+.line-segments-empty-add-button {
+    background-color: green !important;
+    width: 50%;
+    align-self: center;
+    flex-shrink: 0;
+    height: 48px;
+    border-radius: 10px !important;
+}
+
+.line-segments-empty-cancel-button {
+    background-color: red !important;
+    width: 50%;
+    align-self: center;
+    flex-shrink: 0;
+    height: 48px;
+    margin-top: 20px !important;
+    border-radius: 10px !important;
+}
+
+.line-segments-empty-list {
+    width: 40%;
+    align-self: center;
+}
+
+.line-segments-empty-item {
+    background-color: white !important;
+}
+
+.line-segments-empty-description {
+    width: 50%;
+    align-self: center;
+}
+
+.invisible-box {
+    visibility: hidden;
+}

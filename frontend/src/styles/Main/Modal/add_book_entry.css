@@ -1,0 +1,24 @@
+.add-entry-button {
+    background-color: green !important;
+    align-self: center;
+    height: 42px;
+    width: 200px;
+}
+
+.invisible-box {
+    display: 'none';
+}
+
+.confirm-entry-button {
+    background-color: green !important;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
+}
+
+.cancel-entry-button {
+    background-color: rgb(170 27 27) !important;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
+}

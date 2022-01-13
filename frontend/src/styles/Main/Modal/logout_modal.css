@@ -1,0 +1,25 @@
+.logout-message {
+    text-align: center;
+}
+
+.button-box {
+    width: 40%;
+    align-self: center;
+    position: absolute !important;
+    top: 70% !important;
+    height: 50px !important;
+}
+
+.yes-button {
+    background-color: green !important;
+    color: white !important;
+    border-radius: 10px !important;
+    right: calc(60% - 50px);
+}
+
+.no-button {
+    background-color: rgb(173, 32, 32) !important;
+    color: white !important;
+    border-radius: 10px !important;
+    left: calc(60% - 50px);
+}

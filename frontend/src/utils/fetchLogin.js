@@ -1,11 +1,14 @@
 export default async function fetchLogin(login, pass) {
-    await fetch("/auth", {
+    return await fetch("/auth", {
         body: JSON.stringify({ username: login, password: pass }),
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(res => res.text()).then(result => {
-        console.log(result);
-    })
+    }).then(res => res.json()).then(result => {
+        return result;
+    }).catch(err => {
+        console.error(err);
+        return err;
+    });
 }

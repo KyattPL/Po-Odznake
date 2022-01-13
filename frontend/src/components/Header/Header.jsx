@@ -11,13 +11,13 @@ import ModalSwitch from "../Main/Modals/ModalSwitch";
 
 import "../../styles/Header/header.css";
 
-function Header() {
+function Header({ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }) {
 
     const [modalToShow, setModalToShow] = useState(null);
-    const [shouldShowmodal, setShouldShowModal] = useState(false);
+    const [shouldShowModal, setShouldShowModal] = useState(false);
 
     const displayModal = (menuItemId) => {
-        setShouldShowModal(!shouldShowmodal);
+        setShouldShowModal(!shouldShowModal);
         setModalToShow(menuItemId);
     };
 
@@ -25,12 +25,13 @@ function Header() {
         <Grid item xs={12}>
             <AppBar position="static" className="header-appbar">
                 <Toolbar disableGutters className="header-toolbar">
-                    <HeaderSmall displayModal={displayModal}/>
-                    <HeaderRegular displayModal={displayModal}/>
-                    <HeaderUserProfile displayModal={displayModal}/>
+                    <HeaderSmall displayModal={displayModal} isLoggedIn={isLoggedIn} />
+                    <HeaderRegular displayModal={displayModal} isLoggedIn={isLoggedIn} />
+                    <HeaderUserProfile displayModal={displayModal} isLoggedIn={isLoggedIn} />
                 </Toolbar>
             </AppBar>
-            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowmodal} displayModal={displayModal}/>
+            <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowModal} displayModal={displayModal}
+                setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} setAccessToken={setAccessToken} />
         </Grid>
     );
 }

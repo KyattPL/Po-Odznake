@@ -12,6 +12,7 @@ const center = {
     lng: 15.7392952,
 };
 
+// TODO: finalne wyzwanie, ogarnąć wszystko z mapą
 function Map() {
     return (
         <Grid item xs={6} sm={8} md={9} xl={10}>

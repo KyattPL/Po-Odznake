@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
@@ -10,11 +10,12 @@ import fetchLogin from "../../../../utils/fetchLogin";
 
 import "../../../../styles/Main/Modal/login_modal.css";
 
-function LoginModalForm() {
+function LoginModalForm({ setAccessToken, setIsLoggedIn, closeModal }) {
 
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [isError, setIsError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleLoginChange = (event) => {
         setLogin(event.currentTarget.value);
@@ -25,12 +26,23 @@ function LoginModalForm() {
     };
 
     const handleLogin = async () => {
-        await fetchLogin(login, password);
-        setIsError(true);
+        const resp = await fetchLogin(login, password);
+        if (resp['status_code'] === 401) {
+            setIsError(true);
+            setErrorMsg("Niepoprawny login lub hasło!");
+        } else if (String(resp).valueOf() === "SyntaxError: Unexpected token < in JSON at position 0") {
+            setIsError(true);
+            setErrorMsg("Wystąpił nieoczekiwany błąd na serwerze!");
+        } else {
+            console.log(resp);
+            setAccessToken(resp["access_token"]);
+            setIsLoggedIn(true);
+            closeModal();
+        }
     }
 
     const errMsg = isError === true ? <Typography variant="h5"
-        className="input-box login-error-msg">Niepoprawny login lub hasło!</Typography> : null;
+        className="input-box login-error-msg">{errorMsg}</Typography> : null;
 
     return (
         <Stack spacing={5} className="login-form-container">
