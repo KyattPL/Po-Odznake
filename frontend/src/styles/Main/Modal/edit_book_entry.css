@@ -1,0 +1,13 @@
+.confirm-edit-be-button {
+    background-color: green !important;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
+}
+
+.cancel-edit-be-button {
+    background-color: rgb(170 27 27) !important;
+    border-radius: 10px !important;
+    border: 2px solid black !important;
+    color: black !important;
+}

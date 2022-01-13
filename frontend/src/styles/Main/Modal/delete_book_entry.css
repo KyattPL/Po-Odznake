@@ -1,0 +1,15 @@
+.confirm-delete-be-button {
+    background-color: green !important;
+    color: black;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin-left: 10px;
+}
+
+.cancel-delete-be-button {
+    background-color: red !important;
+    color: black;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin-left: 10px;
+}

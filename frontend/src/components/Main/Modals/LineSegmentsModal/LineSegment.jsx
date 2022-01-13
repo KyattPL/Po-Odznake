@@ -7,12 +7,10 @@ import TableRow from "@mui/material/TableRow";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 
-import DeleteBookEntry from "./DeleteBookEntry";
-import EditBookEntryForm from "./EditBookEntryForm";
+import DeleteLineSegment from "./DeleteLineSegment";
+import EditLineSegment from "./EditLineSegment";
 
-// TODO: edit i delete pozostały do podpięcia
-function BookEntry({ row }) {
-
+function LineSegment({ row }) {
     const [rowState, setRowState] = useState("normal");
 
     const handleDeleteButton = () => {
@@ -30,21 +28,21 @@ function BookEntry({ row }) {
     return (
         <>
             {rowState === "normal" ?
-                <TableRow key={row.entryID}>
+                <TableRow key={row.segmentID}>
                     <TableCell sx={{ width: '150px' }} component="th" scope="row" className="book-modal-table-number-text">
-                        {row.entryDate}
+                        {row.firstPoint}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.startDate}
+                        {row.secondPoint}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.endDate}
+                        {row.description}
                     </TableCell>
                     <TableCell className="book-modal-table-trip-text">
-                        {row.trip}
+                        {row.points}
                     </TableCell>
                     <TableCell className="book-modal-table-number-text" align="right">
-                        {row.points}
+                        {row.distance} m
                     </TableCell>
                     <TableCell>
                         <Button className="book-modal-edit-button" onClick={handleEditButton}>
@@ -56,11 +54,11 @@ function BookEntry({ row }) {
                             <CancelIcon />
                         </Button>
                     </TableCell>
-                </TableRow> : rowState === "delete" ? <DeleteBookEntry closeForm={restoreRowState} />
-                    : <EditBookEntryForm closeForm={restoreRowState} />
+                </TableRow> : rowState === "delete" ? <DeleteLineSegment closeForm={restoreRowState} />
+                    : <EditLineSegment closeForm={restoreRowState} />
             }
         </>
     );
 }
 
-export default BookEntry;
+export default LineSegment;

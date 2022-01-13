@@ -10,24 +10,23 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-import AddBookEntry from "./AddBookEntry";
-import BookEntry from "./BookEntry";
+import LineSegment from "./LineSegment";
 import ModalTableActions from '../ModalTableActions';
 
-import '../../../../styles/Main/Modal/book_modal.css';
-
-function createData(entryID, entryDate, startDate, endDate, trip, points) {
-    return { entryID, entryDate, startDate, endDate, trip, points };
+function createData(segmentID, firstPoint, secondPoint, description, points, distance) {
+    return { segmentID, firstPoint, secondPoint, description, points, distance };
 }
 
 const rows = [
-    createData(4, '23.07.2021', '17.07.2021', '20.07.2021', 'Karpacz Górny (Wang) -> Śnieżka', 16),
-    createData(3, '20.04.2021', '', '', 'Schronisko PTTK Kochanówka -> Schronisko Pod Łabskim Szczytem', 11),
-    createData(2, '10.12.2020', '10.12.2020', '10.12.2020', 'Marciszów -> Raszów', 13),
-    createData(1, '23.09.2020', '', '', 'Radków -> Schronisku na Szczelińcu', 12)
-].sort((a, b) => (a.entryID < b.entryID ? 1 : -1));
+    createData(4, 'Barania Góra', 'Kobyła', 'Przejście przez czarną górkę', 21, 15400),
+    createData(3, 'Świątynia Wang', 'Karpacz, Równienka', 'Przejście przez białą górkę', 2, 700),
+    createData(2, 'Karpatka', 'Zapora na Łomnicy', 'Przejście koło strumyczka', 2, 1500),
+    createData(1, 'Karpacz, ul. Leśna', 'Karpacz, ul. Sarnia', '', 2, 1500),
+    createData(5, 'Łomniczka', 'Krucze Skały', 'Przejście niedaleko czarnego wąwozu', 1, 500)
+].sort((a, b) => (a.segmentID < b.segmentID ? 1 : -1));
 
-function BookModalTable() {
+// TODO: poprawić stylizację tabelki i finito
+function LineSegmentsTable() {
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
@@ -43,26 +42,22 @@ function BookModalTable() {
             <Table sx={{ minWidth: 500 }} stickyHeader aria-label="custom pagination table" className="book-modal-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell className="book-modal-table-header-text">Data wpisu</TableCell>
-                        <TableCell className="book-modal-table-header-text">Data rozpoczęcia</TableCell>
-                        <TableCell className="book-modal-table-header-text">Data zakończenia</TableCell>
-                        <TableCell className="book-modal-table-header-text">Wycieczka</TableCell>
+                        <TableCell className="book-modal-table-header-text">Pierwszy punkt</TableCell>
+                        <TableCell className="book-modal-table-header-text">Drugi punkt</TableCell>
+                        <TableCell className="book-modal-table-header-text">Opis</TableCell>
                         <TableCell className="book-modal-table-header-text">Punkty</TableCell>
+                        <TableCell className="book-modal-table-header-text">Dystans</TableCell>
                         <TableCell className="book-modal-table-header-text"></TableCell>
                         <TableCell className="book-modal-table-header-text"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {page === 0
-                        ? <TableRow>
-                            <AddBookEntry />
-                        </TableRow> : null}
                     {(rowsPerPage > 0
                         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : rows
                     ).map((row) => (
                         // TODO: użyteczne będzie bardzo tripID po stronie frontendowej
-                        <BookEntry row={row} />
+                        <LineSegment row={row} />
                     ))}
 
                     {emptyRows > 0 && (
@@ -93,4 +88,4 @@ function BookModalTable() {
     );
 }
 
-export default BookModalTable;
+export default LineSegmentsTable;

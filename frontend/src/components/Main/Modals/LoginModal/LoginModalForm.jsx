@@ -34,6 +34,7 @@ function LoginModalForm({ setAccessToken, setIsLoggedIn, closeModal }) {
             setIsError(true);
             setErrorMsg("Wystąpił nieoczekiwany błąd na serwerze!");
         } else {
+            console.log(resp);
             setAccessToken(resp["access_token"]);
             setIsLoggedIn(true);
             closeModal();

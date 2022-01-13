@@ -5,7 +5,8 @@ import Planner from "./Planner/Planner";
 
 import "../../styles/Main/main.css";
 
-// TODO: sprawdzać czy jest się zalogowanym przy reload'owaniu
+// TODO: sprawdzać czy jest się zalogowanym przy reload'owaniu stronki
+// jest ścieżka /curr_identity do brania tokena
 function Main({ isLoggedIn }) {
     return (
         <Grid item xs={12}>
