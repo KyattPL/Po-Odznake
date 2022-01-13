@@ -23,7 +23,7 @@ def authenticate(username, password):
     sha_engine.update(password.encode('utf-8'))
     if user and safe_str_cmp(user.password, sha_engine.hexdigest().encode('utf-8')):
         new_user = User(username, password, user.id)
-        new_user.is_authenticated = True
+        new_user.authenticated = True
         user_list.append(new_user)
         login_user(new_user)
         return True
@@ -36,11 +36,11 @@ class User():
         self.username = username
         self.password = password
         self.id = id
-        self.is_authenticated = False
+        self.authenticated = False
     
     
     def is_authenticated(self):
-        return self.is_authenticated
+        return self.authenticated
     
     def is_active(self):
         return True

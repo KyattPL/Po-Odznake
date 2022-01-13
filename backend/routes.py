@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, current_app, request
 #from flask_jwt import JWT, jwt_required, current_identity
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, logout_user
 from sqlalchemy.orm import query
 from queries import DBAccess
 from db_models_serial import Schemas
@@ -33,8 +33,13 @@ def login_user():
 
 
 
-@routes.route("/curr_identity", methods = ['POST'])
+@routes.route("/curr_identity", methods = ['GET'])
 @login_required
 def get_current_identity():
     return {"user_id":current_user.get_id()} if current_user.get_id() != None and current_user.is_authenticated() else {"user_id": None}
 
+@routes.route("/logout", methods = ['POST'])
+def logout():
+    user = current_user
+    user.authenticated = False
+    logout_user()
