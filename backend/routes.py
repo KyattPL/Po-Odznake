@@ -1,6 +1,4 @@
-from crypt import methods
 from flask import Blueprint, jsonify, current_app, request
-from backend.db_models import GeoPoints
 #from flask_jwt import JWT, jwt_required, current_identity
 from flask_login import current_user, login_required, logout_user
 from sqlalchemy.orm import query
@@ -118,7 +116,7 @@ def change_book_entry():
 
 @routes.route("/delete_entry", methods = ['POST'])
 @login_required
-def change_book_entry():
+def delete_book_entry():
     user_id = current_user.get_id()
     trip_id = int(request.json['trip_id'])
     DBAccess.delete_book_entry(user_id, trip_id)
