@@ -85,12 +85,11 @@ class Segments(db.Model):
     starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('segments', lazy=True))
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('segments2', lazy=True))
 
-    def __init__(self, points, description, is_active, distance, trial_color, starting_point_id, ending_point_id, tourist_id):
+    def __init__(self, points, description, is_active, distance, starting_point_id, ending_point_id, tourist_id):
         self.points = points
         self.description = description
         self.is_active = is_active
         self.distance = distance
-        self.trial_color = trial_color
         self.starting_point_id = starting_point_id
         self.ending_point_id = ending_point_id
         self.tourist_id = tourist_id
@@ -104,10 +103,12 @@ class BooksEntries(db.Model):
     
     trip = db.relationship("Trips", backref=db.backref("books_entries", lazy=True))
 
-    def __init__(self, trip_of_tourist_id, book_id, entry_date):
-        self.trip_of_tourist_id = trip_of_tourist_id
+    def __init__(self, trip_of_tourist_id, book_id, entry_date, start_date, end_date):
+        self.trip_id = trip_of_tourist_id
         self.book_id = book_id
         self.entry_date = entry_date
+        self.start_date = start_date
+        self.end_date = end_date
 
 class SegmentsInRoutes(db.Model):
     segment_id = db.Column(db.Integer, db.ForeignKey('segments.id'), primary_key=True, autoincrement=False)

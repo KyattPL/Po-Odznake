@@ -18,7 +18,7 @@ class PointsSchema(ma.Schema):
 
 class SegmentsSchema(ma.Schema):
     class Meta:
-        fields = ('id','points', 'description', 'is_active', 'distance', 'trial_color', 'starting_point', 'ending_point')
+        fields = ('id','points', 'description', 'is_active', 'distance', 'starting_point', 'ending_point', 'tourist_id')
 
     starting_point = ma.Nested(PointsSchema)
     ending_point = ma.Nested(PointsSchema)

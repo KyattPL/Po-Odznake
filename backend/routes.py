@@ -1,10 +1,13 @@
+from crypt import methods
 from flask import Blueprint, jsonify, current_app, request
+from backend.db_models import GeoPoints
 #from flask_jwt import JWT, jwt_required, current_identity
 from flask_login import current_user, login_required, logout_user
 from sqlalchemy.orm import query
 from queries import DBAccess
 from db_models_serial import Schemas
 from auth import authenticate
+from datetime import datetime
 
 routes = Blueprint('routes', __name__)
 
@@ -16,7 +19,71 @@ def index():
 def add_language():
     pass
 
-@routes.route("/get_user_entries", methods = ['POST'])
+@routes.route("/get_segments", methods = ['GET'])
+def get_segments():
+    segments_list = []
+    if current_user == None:
+        segments_list = DBAccess.get_def_segments()
+    else:
+        segments_list = DBAccess.get_segments(current_user.get_id())
+    return jsonify(Schemas.segments_schema.dump(segments_list))
+
+@routes.route("/get_user_segments", methods = ['GET'])
+@login_required
+def get_user_segments():
+    user_id = current_user.get_id()
+    user_segments_list = DBAccess.get_user_segments(user_id)
+    return jsonify(Schemas.segments_schema.dump(user_segments_list))
+
+@routes.route("/get_points", methods = ['GET'])
+def get_points():
+    points_list = DBAccess.get_points()
+    return jsonify(Schemas.points_schema.dump(points_list))
+
+@routes.route("/add_new_segment", methods = ['POST'])
+@login_required
+def add_new_segment():
+    user_id = current_user.get_id()
+    description = request.json['description']
+    distance = request.json['distance']
+    point_A_id = int(request.json['point_a_id'])
+    point_B_id = int(request.json['point_b_id'])
+    DBAccess.add_segment(description, distance, point_A_id, point_B_id, user_id)
+    user_segments_list = DBAccess.get_user_segments(user_id)
+    return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
+
+@routes.route("/add_new_route", methods = ['POST'])
+@login_required
+def add_new_route():
+    segments_list = request.json['segments']
+    DBAccess.add_route(segments_list)
+    return jsonify({"status":"OK"}), 200
+
+@routes.route("/delete_segment", methods = ['POST'])
+@login_required
+def delete_segment():
+    user_id = current_user.get_id()
+    point_A_id = int(request.json['point_a_id'])
+    point_B_id = int(request.json['point_b_id'])
+    DBAccess.delete_segment(point_A_id, point_B_id, user_id)
+    user_segments_list = DBAccess.get_user_segments(user_id)
+    return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
+
+@routes.route("/edit_segment", methods = ['POST'])
+@login_required
+def edit_segment():
+    user_id = current_user.get_id()
+    point_A_id = int(request.json['point_a_id'])
+    point_B_id = int(request.json['point_b_id'])
+    description = request.json['description']
+    distance = request.json['distance']
+    new_point_A_id = int(request.json['new_point_a_id'])
+    new_point_B_id = int(request.json['new_point_b_id'])
+    DBAccess.update_segment(user_id, description, distance, point_A_id, point_B_id, new_point_A_id, new_point_B_id)
+    user_segments_list = DBAccess.get_user_segments(user_id)
+    return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
+
+@routes.route("/get_user_entries", methods = ['GET'])
 @login_required
 def get_user_entries():
     user_id = current_user.get_id()
@@ -24,6 +91,39 @@ def get_user_entries():
     #print(str(DBAccess.get_user_book_entries(353453)[0][0].id) + " " + str(DBAccess.get_user_book_entries(353453)[1][0].id))
     # + str(DBAccess.get_point_by_id(rec[3]).name) + " " + str(DBAccess.get_point_by_id(rec[4]).name)
     return jsonify(Schemas.book_entries_schema.dump(all_user_entries))
+
+@routes.route("/add_new_entry", methods = ['POST'])
+@login_required
+def add_new_entry():
+    user_id = current_user.get_id()
+    entry_date = datetime.strptime(request.json['entry_date'],'%d:%m:%Y')
+    start_date = datetime.strptime(request.json['start_date'],'%d:%m:%Y')
+    end_date = datetime.strptime(request.json['end_date'],'%d:%m:%Y')
+    trip_id = int(request.json['trip_id'])
+    DBAccess.add_new_entry(user_id, entry_date, start_date, end_date, trip_id)
+    user_book_entries = DBAccess.get_user_book_entries(user_id)
+    return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
+
+@routes.route("/change_entry", methods = ['POST'])
+@login_required
+def change_book_entry():
+    user_id = current_user.get_id()
+    trip_id = int(request.json['trip_id'])
+    new_trip_id = int(request.json['new_trip_id'])
+    new_start_date = datetime.strptime(request.json['new_start_date'],'%d:%m:%Y')
+    new_end_date = datetime.strptime(request.json['new_end_date'],'%d:%m:%Y')
+    DBAccess.change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date)
+    user_book_entries = DBAccess.get_user_book_entries(user_id)
+    return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
+
+@routes.route("/delete_entry", methods = ['POST'])
+@login_required
+def change_book_entry():
+    user_id = current_user.get_id()
+    trip_id = int(request.json['trip_id'])
+    DBAccess.delete_book_entry(user_id, trip_id)
+    user_book_entries = DBAccess.get_user_book_entries(user_id)
+    return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
 
 @routes.route("/login", methods = ['POST'])
 def login_user():
