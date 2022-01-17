@@ -167,7 +167,7 @@ class DBAccess():
             raise db_error
     
     @staticmethod
-    def add_new_entry(user_id, entry_date, start_date, end_date, trip_id):
+    def add_new_entry(user_id, start_date, end_date, trip_id):
         try:
             curr_usr = Tourists.query.filter(Tourists.id == user_id).first()
             book_entry = BooksEntries(trip_id, curr_usr.book_id, start_date, end_date)
