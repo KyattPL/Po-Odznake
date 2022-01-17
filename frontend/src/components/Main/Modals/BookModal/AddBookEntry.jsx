@@ -7,7 +7,7 @@ import AddBookEntryForm from "./AddBookEntryForm";
 
 import "../../../../styles/Main/Modal/add_book_entry.css";
 
-function AddBookEntry() {
+function AddBookEntry({ updateEntries }) {
 
     const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -18,7 +18,7 @@ function AddBookEntry() {
     return (
         <>
             {isFormOpen ?
-                <AddBookEntryForm setIsFormOpen={setIsFormOpen} />
+                <AddBookEntryForm setIsFormOpen={setIsFormOpen} updateEntries={updateEntries} />
                 : <TableCell align="center" colSpan={7}>
                     <Button variant="contained" className="add-entry-button" onClick={handleOpenEntryForm}>
                         Dodaj wpis

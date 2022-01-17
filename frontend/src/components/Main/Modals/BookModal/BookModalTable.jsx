@@ -16,27 +16,18 @@ import ModalTableActions from '../ModalTableActions';
 
 import '../../../../styles/Main/Modal/book_modal.css';
 
-function createData(entryID, entryDate, startDate, endDate, trip, points) {
-    return { entryID, entryDate, startDate, endDate, trip, points };
-}
-
-const rows = [
-    createData(4, '23.07.2021', '17.07.2021', '20.07.2021', 'Karpacz Górny (Wang) -> Śnieżka', 16),
-    createData(3, '20.04.2021', '', '', 'Schronisko PTTK Kochanówka -> Schronisko Pod Łabskim Szczytem', 11),
-    createData(2, '10.12.2020', '10.12.2020', '10.12.2020', 'Marciszów -> Raszów', 13),
-    createData(1, '23.09.2020', '', '', 'Radków -> Schronisku na Szczelińcu', 12)
-].sort((a, b) => (a.entryID < b.entryID ? 1 : -1));
-
-function BookModalTable() {
+function BookModalTable({ entries, updateEntries }) {
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - entries.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+    console.log(entries);
 
     return (
         <TableContainer component={Box} className="book-modal-table-container">
@@ -55,14 +46,13 @@ function BookModalTable() {
                 <TableBody>
                     {page === 0
                         ? <TableRow>
-                            <AddBookEntry />
+                            <AddBookEntry updateEntries={updateEntries} />
                         </TableRow> : null}
-                    {(rowsPerPage > 0
-                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : rows
-                    ).map((row) => (
-                        // TODO: użyteczne będzie bardzo tripID po stronie frontendowej
-                        <BookEntry row={row} />
+                    {(rowsPerPage > 0 && entries != null
+                        ? entries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : entries
+                    ).map((entry) => (
+                        <BookEntry entry={entry} updateEntries={updateEntries} />
                     ))}
 
                     {emptyRows > 0 && (
@@ -77,7 +67,7 @@ function BookModalTable() {
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[rowsPerPage]}
                             colSpan={7}
-                            count={rows.length}
+                            count={entries.length}
                             page={page}
                             onPageChange={handleChangePage}
                             ActionsComponent={ModalTableActions}

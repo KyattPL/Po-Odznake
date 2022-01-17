@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import plLocale from "date-fns/locale/pl";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,12 +15,17 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import fetchAddNewEntry from "../../../../utils/fetchAddNewEntry";
+import fetchGetTrips from "../../../../utils/fetchGetTrips";
+
 import "../../../../styles/Main/Modal/empty_book_modal.css";
 
-function BookModalEmptyBook() {
+function BookModalEmptyBook({ updateEntries }) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [displayClass, setDisplayClass] = useState("invisible-box");
+
+    const [trips, setTrips] = useState([]);
 
     const [selectedTrip, setSelectedTrip] = useState('');
     const [beginDate, setBeginDate] = useState(null);
@@ -29,9 +35,18 @@ function BookModalEmptyBook() {
         setSelectedTrip(event.target.value);
     };
 
+    useEffect(() => {
+        fetchGetTrips().then(res => {
+            console.log(res);
+            setTrips(res);
+        }).catch(err => console.error(err));
+    }, []);
+
     const handleAddEntry = () => {
         if (isFormVisible) {
-
+            fetchAddNewEntry(beginDate, endDate, selectedTrip).then(res => {
+                updateEntries(res);
+            }).catch(err => console.error(err));
         } else {
             setIsFormVisible(true);
             setDisplayClass("");
@@ -50,18 +65,22 @@ function BookModalEmptyBook() {
             </Typography>
             <Box sx={{ height: '40px' }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }} className={displayClass}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)}
+                <LocalizationProvider dateAdapter={AdapterDateFns} locale={plLocale}>
+                    <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)} mask="__.__.____"
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data rozpoczęcia" />} />
-                    <DatePicker value={endDate} onChange={(val) => setEndDate(val)}
+                    <DatePicker value={endDate} onChange={(val) => setEndDate(val)} mask="__.__.____"
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data zakończenia" />} />
                 </LocalizationProvider>
             </Box>
             <FormControl className={"empty-book-trip-list " + displayClass}>
                 <InputLabel>Wycieczka</InputLabel>
-                <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka">
-                    <MenuItem className="empty-book-trip-item" value={1}>pierwsza wycieczka</MenuItem>
-                    <MenuItem className="empty-book-trip-item" value={2}>druga wycieczka</MenuItem>
+                <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka" autoWidth={false}
+                    MenuProps={{ PaperProps: { style: { maxHeight: '150px', maxWidth: '1200px', width: '50vw' } } }}>
+                    {trips != null ? trips.map(trip =>
+                        <MenuItem key={trip['id']} className="empty-book-trip-item" value={trip['id']} style={{ whiteSpace: 'normal', width: '100%' }}>
+                            {trip['starting_point']['name'] + " -> " + trip['ending_point']['name']}
+                        </MenuItem>
+                    ) : <MenuItem>CANT LOAD TRIPS</MenuItem>}
                 </Select>
             </FormControl>
             <Button variant="contained" className="empty-book-add-button" onClick={handleAddEntry}>

@@ -10,8 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteBookEntry from "./DeleteBookEntry";
 import EditBookEntryForm from "./EditBookEntryForm";
 
-// TODO: edit i delete pozostały do podpięcia
-function BookEntry({ row }) {
+function BookEntry({ entry, updateEntries }) {
 
     const [rowState, setRowState] = useState("normal");
 
@@ -27,24 +26,25 @@ function BookEntry({ row }) {
         setRowState("normal");
     }
 
+    // TODO: getTripById bo potrzeba 'description' i 'points'do wyświetlenia + id wpisu trzeba
     return (
         <>
             {rowState === "normal" ?
-                <TableRow key={row.entryID}>
+                <TableRow key={entry['trip_id']}>
                     <TableCell sx={{ width: '150px' }} component="th" scope="row" className="book-modal-table-number-text">
-                        {row.entryDate}
+                        {entry['entry_date']}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.startDate}
+                        {entry['start_date']}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.endDate}
+                        {entry['end_date']}
                     </TableCell>
                     <TableCell className="book-modal-table-trip-text">
-                        {row.trip}
+                        {entry['description']}
                     </TableCell>
                     <TableCell className="book-modal-table-number-text" align="right">
-                        {row.points}
+                        {entry['points']}
                     </TableCell>
                     <TableCell>
                         <Button className="book-modal-edit-button" onClick={handleEditButton}>
@@ -56,8 +56,8 @@ function BookEntry({ row }) {
                             <CancelIcon />
                         </Button>
                     </TableCell>
-                </TableRow> : rowState === "delete" ? <DeleteBookEntry closeForm={restoreRowState} />
-                    : <EditBookEntryForm closeForm={restoreRowState} />
+                </TableRow> : rowState === "delete" ? <DeleteBookEntry closeForm={restoreRowState} tripId={entry['trip_id']} updateEntries={updateEntries} />
+                    : <EditBookEntryForm closeForm={restoreRowState} tripId={entry['trip_id']} updateEntries={updateEntries} />
             }
         </>
     );

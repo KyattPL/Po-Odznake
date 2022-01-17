@@ -23,8 +23,23 @@ function BookModal({ shouldShow, closeModal }) {
     useEffect(() => {
         fetchGetUserEntries().then((res) => {
             console.log(res);
+            setEntries(res);
+            if (res.length !== 0) {
+                setIsEmpty(false);
+            } else {
+                setIsEmpty(true);
+            }
         }).catch(err => console.error(err));
     }, []);
+
+    const updateEntries = (newEntries) => {
+        setEntries(newEntries);
+        if (newEntries.length !== 0) {
+            setIsEmpty(false);
+        } else {
+            setIsEmpty(true);
+        }
+    };
 
     const handleCloseModalButton = () => {
         closeModal();
@@ -40,7 +55,7 @@ function BookModal({ shouldShow, closeModal }) {
                     <IconButton onClick={() => setIsEmpty(!isEmpty)}>
                         <ChangeCircleIcon className="change-modal-icon" />
                     </IconButton>
-                    {isEmpty ? <BookModalEmptyBook /> : <BookModalTable />}
+                    {isEmpty ? <BookModalEmptyBook updateEntries={updateEntries} /> : <BookModalTable entries={entries} updateEntries={updateEntries} />}
                 </Container>
             </Fade>
         </Modal>
