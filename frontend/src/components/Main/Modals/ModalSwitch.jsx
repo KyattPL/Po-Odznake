@@ -3,7 +3,7 @@ import LineSegmentsModal from "./LineSegmentsModal/LineSegmentsModal";
 import LoginModal from "./LoginModal/LoginModal";
 import LogoutModal from "./LogoutModal/LogoutModal";
 
-function ModalSwitch({ modalToShow, shouldShow, displayModal, setIsLoggedIn, accessToken, setAccessToken }) {
+function ModalSwitch({ modalToShow, shouldShow, displayModal, setIsLoggedIn }) {
 
     let modalComponent = null;
 
@@ -14,10 +14,10 @@ function ModalSwitch({ modalToShow, shouldShow, displayModal, setIsLoggedIn, acc
             modalComponent = <BookModal shouldShow={shouldShow} closeModal={() => displayModal(modalToShow)} />; break;
         case "head-menu-opt-login":
             modalComponent = <LoginModal shouldShow={shouldShow} closeModal={() => displayModal(modalToShow)}
-                setAccessToken={setAccessToken} setIsLoggedIn={setIsLoggedIn} />; break;
+                setIsLoggedIn={setIsLoggedIn} />; break;
         case "head-menu-opt-logout":
             modalComponent = <LogoutModal shouldShow={shouldShow} closeModal={() => displayModal(modalToShow)}
-                setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} />; break;
+                setIsLoggedIn={setIsLoggedIn} />; break;
         default:
             modalComponent = null;
     }

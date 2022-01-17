@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Container from "@mui/material/Container";
 import Fade from "@mui/material/Fade";
@@ -11,11 +11,20 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import BookModalEmptyBook from "./BookModalEmptyBook";
 import BookModalTable from "./BookModalTable";
 
+import fetchGetUserEntries from "../../../../utils/fetchGetUserEntries";
+
 import "../../../../styles/Main/Modal/modal.css";
 
 function BookModal({ shouldShow, closeModal }) {
 
     const [isEmpty, setIsEmpty] = useState(true);
+    const [entries, setEntries] = useState([]);
+
+    useEffect(() => {
+        fetchGetUserEntries().then((res) => {
+            console.log(res);
+        }).catch(err => console.error(err));
+    }, []);
 
     const handleCloseModalButton = () => {
         closeModal();

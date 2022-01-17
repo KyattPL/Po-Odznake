@@ -9,7 +9,7 @@ import LoginModalForm from "./LoginModalForm";
 
 import "../../../../styles/Main/Modal/modal.css";
 
-function LoginModal({ shouldShow, closeModal, setAccessToken, setIsLoggedIn }) {
+function LoginModal({ shouldShow, closeModal, setIsLoggedIn }) {
 
     const handleCloseModalButton = () => {
         closeModal();
@@ -22,7 +22,7 @@ function LoginModal({ shouldShow, closeModal, setAccessToken, setIsLoggedIn }) {
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
-                    <LoginModalForm setAccessToken={setAccessToken} setIsLoggedIn={setIsLoggedIn} closeModal={closeModal} />
+                    <LoginModalForm setIsLoggedIn={setIsLoggedIn} closeModal={closeModal} />
                 </Container>
             </Fade>
         </Modal>
