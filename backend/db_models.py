@@ -1,9 +1,11 @@
+import email
+import re
 from sqlalchemy.orm import backref
 from flask_sqlalchemy import SQLAlchemy
 import hashlib
 
 db = SQLAlchemy()
-
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 class MountainRoutes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +23,25 @@ class GeoPoints(db.Model):
     height = db.Column(db.Integer, nullable=False)
 
     def __init__(self, name, description, latitude, longitude, exists, height):
+        if type(name) != str or type(description) != str:
+            raise TypeError("Name and description must be strings")
+        if type(latitude) not in [float,int] or type(longitude) not in [float, int]:
+            raise TypeError("Latitude and longtitude must be real numbers")
+        if type(exists) != bool:
+            raise TypeError("Exists information must be passed as boolean")
+        if type(height) != int:
+            raise TypeError("Height must be integer number")
+        if height < 0 or height > 9000:
+            raise ValueError("Height must be in the range of (0, 9000)")
+        if len(name) > 30:
+            raise ValueError("Name too long")
+        if len(description) > 255:
+            raise ValueError("Description too long")
+        if latitude < -90.0 or latitude > 90.0:
+            raise ValueError("Latitude must be in the range of (-90, 90)")
+        if longitude < -180.0 or longitude > 180.0:
+            raise ValueError("Longtitude must be in the range of (-180, 180)")
+        
         self.name = name
         self.description = description
         self.latitude = latitude
@@ -33,6 +54,8 @@ class Books(db.Model):
     serial_number = db.Column(db.Integer, primary_key=True)
 
     def __init__(self, serial_number):
+        if type(serial_number) != int:
+            raise TypeError("Serial number of the book must be an integer")
         self.serial_number = serial_number
 
 class Tourists(db.Model):
@@ -46,7 +69,30 @@ class Tourists(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.serial_number'))
     book = db.relationship('Books', backref=db.backref('tourists',lazy=True), uselist=False)
     
-    def __init__(self, name, last_name, login, password, email, age, preferred_lang, book_id):
+    def __init__(self, name, last_name, login, password, email, age, book_id):
+        if type(name) != str or type(last_name) != str:
+            raise TypeError("First name and last name must be strings")
+        if type(login) != str or type(password) != str:
+            raise TypeError("Credentials must be strings")
+        if type(email) != str:
+            raise TypeError("Email address must be string")
+        if type(age) != int:
+            raise TypeError("Age must be an integer")
+        if book_id != None and type(book_id) != int:
+            raise TypeError("Book id must be an integer")
+        if len(name) > 30:
+            raise ValueError("First name too long")
+        if len(last_name) > 30:
+            raise ValueError("Last name too long")
+        if len(login) > 30:
+            raise ValueError("Login too long")
+        if len(email) > 30:
+            raise ValueError("Email too long")
+        if age < 12:
+            raise ValueError("Required age too small")
+        if not re.fullmatch(regex, email):
+            raise ValueError("Given email address is not valid")
+        
         sha_engine = hashlib.sha256()
         sha_engine.update(password.encode(encoding='utf-8'))
         self.name = name
@@ -55,7 +101,6 @@ class Tourists(db.Model):
         self.password = sha_engine.hexdigest()
         self.email = email
         self.age = age
-        self.preferred_lang = preferred_lang
         self.book_id = book_id
 
 
@@ -66,9 +111,10 @@ class Trips(db.Model):
     points = db.Column(db.Integer, nullable=False)
     starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('trips', lazy=True))
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('trips2', lazy=True))
-    def __init__(self, starting_point_id, ending_point_id):
+    def __init__(self, starting_point_id, ending_point_id, points):
         self.starting_point_id = starting_point_id
         self.ending_point_id = ending_point_id
+        self.points = points
 
 
 class Segments(db.Model):

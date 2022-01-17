@@ -35,7 +35,7 @@ def get_user_segments():
 
 @routes.route("/get_trips", methods = ['GET'])
 @login_required
-def get_user_segments():
+def get_trips():
     trips_list = DBAccess.get_trips()
     return jsonify(Schemas.trips_schema.dump(trips_list))
 
