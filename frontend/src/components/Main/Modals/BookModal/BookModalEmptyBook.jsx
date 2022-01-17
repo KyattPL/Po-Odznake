@@ -74,9 +74,9 @@ function BookModalEmptyBook({ updateEntries }) {
             </Box>
             <FormControl className={"empty-book-trip-list " + displayClass}>
                 <InputLabel>Wycieczka</InputLabel>
-                <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka" autoWidth={false}
+                <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
                     MenuProps={{ PaperProps: { style: { maxHeight: '150px', maxWidth: '1200px', width: '50vw' } } }}>
-                    {trips != null ? trips.map(trip =>
+                    {trips != null && Array.isArray(trips) ? trips.map(trip =>
                         <MenuItem key={trip['id']} className="empty-book-trip-item" value={trip['id']} style={{ whiteSpace: 'normal', width: '100%' }}>
                             {trip['starting_point']['name'] + " -> " + trip['ending_point']['name']}
                         </MenuItem>

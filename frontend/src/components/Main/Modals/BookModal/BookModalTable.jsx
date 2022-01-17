@@ -48,13 +48,12 @@ function BookModalTable({ entries, updateEntries }) {
                         ? <TableRow>
                             <AddBookEntry updateEntries={updateEntries} />
                         </TableRow> : null}
-                    {(rowsPerPage > 0 && entries != null
+                    {entries === null || !Array.isArray(entries) ? null : (rowsPerPage > 0
                         ? entries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : entries
                     ).map((entry) => (
-                        <BookEntry entry={entry} updateEntries={updateEntries} />
+                        <BookEntry key={entry['trip']['id']} entry={entry} updateEntries={updateEntries} />
                     ))}
-
                     {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                             <TableCell colSpan={7} />
@@ -67,7 +66,7 @@ function BookModalTable({ entries, updateEntries }) {
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[rowsPerPage]}
                             colSpan={7}
-                            count={entries.length}
+                            count={entries !== null ? entries.length : 0}
                             page={page}
                             onPageChange={handleChangePage}
                             ActionsComponent={ModalTableActions}

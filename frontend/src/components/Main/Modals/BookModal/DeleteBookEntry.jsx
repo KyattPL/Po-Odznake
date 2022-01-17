@@ -13,9 +13,10 @@ import "../../../../styles/Main/Modal/delete_book_entry.css";
 function DeleteBookEntry({ closeForm, tripId, updateEntries }) {
 
     const deleteEntry = () => {
+        console.log(tripId);
         fetchDeleteEntry(tripId).then(res => {
             updateEntries(res);
-        }).catch(err => console.error(err));
+        }).then(() => closeForm()).catch(err => console.error(err));
     };
 
     return (
