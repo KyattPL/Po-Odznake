@@ -11,15 +11,17 @@ class DBAccess():
     def get_user_segments(usr_id):
         try:
             return Segments.query.filter(Segments.tourist_id==usr_id).all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod
     def get_segments(usr_id):
         try:
             return Segments.query.filter(Segments.tourist_id==usr_id or Segments.tourist_id==None).all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def add_segment(description, distance, point_A_id, point_B_id, usr_id):
@@ -32,8 +34,9 @@ class DBAccess():
             db.session.add(seg_A_B)
             db.session.add(seg_B_A)
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod    
     def delete_segment(point_A_id, point_B_id, user_id):
@@ -43,8 +46,9 @@ class DBAccess():
             for seg in segs_to_del:
                 db.session.delete(seg)
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def update_segment(user_id, description, distance, point_A_id, point_B_id, new_point_A_id, new_point_B_id):
@@ -65,8 +69,9 @@ class DBAccess():
             segs_to_upd[1].points = points
 
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod
     def add_route(segments):
@@ -77,78 +82,89 @@ class DBAccess():
                 seg_in_rt = SegmentsInRoutes(seg.id, rt.id)
                 db.session.add(seg_in_rt)
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
-            logging.error("Database connection lost!")    
+        except sqlalchemy.exc.OperationalError as db_error:
+            logging.error("Database connection lost!")
+            raise db_error   
 
     @staticmethod
     def get_points():
         try:
             return GeoPoints.query.all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod
     def get_def_segments():
         try:
             return Segments.query.filter(Segments.tourist_id==None).all()
-        except sqlalchemy.exc.OperationalError:
-            logging.error("Database connection lost!")    
+        except sqlalchemy.exc.OperationalError as db_error:
+            logging.error("Database connection lost!")
+            raise db_error   
 
     @staticmethod
     def get_def_points():
         try:
             return GeoPoints.query.all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod
     def get_points():
         try:
             return GeoPoints.query.all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def get_trips():
         try:
             return Trips.query.all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
             
     @staticmethod
     def get_users():
         try:
             return Tourists.query.all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def get_user_by_name(username):
         try:
             return Tourists.query.filter(Tourists.login == username).first()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def get_user_by_id(id):
         try:
             return Tourists.query.filter(Tourists.id == id).first()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
     @staticmethod
     def get_user_book_entries(usr_id):
         try:
             return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).all()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error 
 
     @staticmethod
     def get_point_by_id(id):
         try:
             return GeoPoints.query.filter(GeoPoints.id == id).first()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def add_new_entry(user_id, entry_date, start_date, end_date, trip_id):
@@ -157,8 +173,9 @@ class DBAccess():
             book_entry = BooksEntries(trip_id, curr_usr.book_id, start_date, end_date)
             db.session.add(book_entry)
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date):
@@ -169,8 +186,9 @@ class DBAccess():
             book_entry.start_date = new_start_date
             book_entry.end_date = new_end_date
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
     
     @staticmethod
     def delete_book_entry(user_id, trip_id):
@@ -179,6 +197,7 @@ class DBAccess():
             book_entry = BooksEntries.query.filter(BooksEntries.book_id == curr_usr.book_id and BooksEntries.trip_id == trip_id).first()
             db.session.delete(book_entry)
             db.session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
+            raise db_error
 
