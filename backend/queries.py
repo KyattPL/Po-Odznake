@@ -173,7 +173,7 @@ class DBAccess():
         try:
             #trip = BooksEntries.query.join(Tourists, BooksEntries.book_id == Books.serial_number).join(Trips)
             #print(BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).join(Trips, Trips.id == BooksEntries.trip_id).add_column(Trips.points).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, Trips.points).all())
-            user_book_entries_w_points = BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).join(Trips, Trips.id == BooksEntries.trip_id).add_column(Trips.points).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, Trips.points).all()
+            user_book_entries_w_points = BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).join(Trips, Trips.id == BooksEntries.trip_id).add_column(Trips.points).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date.desc(), Trips.points).all()
             user_book_entries = []
             for book_entry in user_book_entries_w_points:
                 user_book_entries.append(book_entry[0])
