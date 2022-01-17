@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import plLocale from "date-fns/locale/pl";
 
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -16,24 +17,35 @@ import TextField from "@mui/material/TextField";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from "@mui/icons-material/Done";
 
+import fetchGetTrips from "../../../../utils/fetchGetTrips";
+
 import "../../../../styles/Main/Modal/edit_book_entry.css";
 
-function EditBookEntryForm({ closeForm }) {
+function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
 
-    const [beginDate, setBeginDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [trips, setTrips] = useState([]);
+
+    const [beginDate, setBeginDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [selectedTrip, setSelectedTrip] = useState(null);
+
+    useEffect(() => {
+        fetchGetTrips().then(res => {
+            console.log(res);
+            setTrips(res);
+        }).catch(err => console.error(err));
+    }, []);
 
     return (
         <TableRow>
             <TableCell align="center">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns} locale={plLocale}>
                     <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)}
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data rozpoczęcia" />} />
                 </LocalizationProvider>
             </TableCell>
             <TableCell align="center">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns} locale={plLocale}>
                     <DatePicker value={endDate} onChange={(val) => setEndDate(val)}
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data zakończenia" />} />
                 </LocalizationProvider>
@@ -42,8 +54,11 @@ function EditBookEntryForm({ closeForm }) {
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Wycieczka</InputLabel>
                     <Select value={selectedTrip} onChange={(event) => setSelectedTrip(event.currentTarget.value)} label="Wycieczka">
-                        <MenuItem value={1}>Pierwsza wycieczka</MenuItem>
-                        <MenuItem value={2}>Druga wycieczka</MenuItem>
+                        {trips != null ? trips.map(trip =>
+                            <MenuItem key={trip['id']} value={trip['id']}>
+                                {trip['starting_point']['name'] + " -> " + trip['ending_point']['name']}
+                            </MenuItem>
+                        ) : <MenuItem>CANT LOAD TRIPS</MenuItem>}
                     </Select>
                 </FormControl>
             </TableCell>

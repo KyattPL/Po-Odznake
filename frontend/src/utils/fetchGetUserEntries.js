@@ -6,6 +6,6 @@ export default async function fetchGetUserEntries() {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return err;
+        return null;
     });
 }

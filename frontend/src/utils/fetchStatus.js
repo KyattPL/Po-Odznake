@@ -6,5 +6,6 @@ export default async function fetchStatus() {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
+        return null;
     });
 }

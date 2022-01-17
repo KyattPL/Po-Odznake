@@ -1,5 +1,5 @@
-export default async function fetchGetSegments() {
-    return await fetch("/get_segments", {
+export default async function fetchGetTrips() {
+    return await fetch("/get_trips", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'

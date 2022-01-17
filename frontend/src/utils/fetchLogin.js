@@ -9,6 +9,6 @@ export default async function fetchLogin(login, pass) {
         return result;
     }).catch(err => {
         console.error(err);
-        return err;
+        return null;
     });
 }

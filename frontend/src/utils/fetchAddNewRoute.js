@@ -7,6 +7,6 @@ export default async function fetchAddNewRoute(segments) {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return err;
+        return null;
     });
 }
