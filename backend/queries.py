@@ -109,6 +109,13 @@ class DBAccess():
             logging.error("Database connection lost!")
     
     @staticmethod
+    def get_trips():
+        try:
+            return Trips.query.all()
+        except sqlalchemy.exc.OperationalError:
+            logging.error("Database connection lost!")
+            
+    @staticmethod
     def get_users():
         try:
             return Tourists.query.all()
