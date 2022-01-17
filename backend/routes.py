@@ -131,8 +131,8 @@ def get_user_entries():
 def add_new_entry():
     user_id = current_user.get_id()
     #entry_date = datetime.strptime(request.json['entry_date'],'%d:%m:%Y')
-    start_date = datetime.strptime(request.json['start_date'],'%d.%m.%Y')
-    end_date = datetime.strptime(request.json['end_date'],'%d.%m.%Y')
+    start_date = datetime.strptime(request.json['start_date'],'%d.%m.%Y').date()
+    end_date = datetime.strptime(request.json['end_date'],'%d.%m.%Y').date()
     trip_id = int(request.json['trip_id'])
     try:
         DBAccess.add_new_entry(user_id, start_date, end_date, trip_id)
@@ -147,8 +147,8 @@ def change_book_entry():
     user_id = current_user.get_id()
     trip_id = int(request.json['trip_id'])
     new_trip_id = int(request.json['new_trip_id'])
-    new_start_date = datetime.strptime(request.json['new_start_date'],'%d.%m.%Y')
-    new_end_date = datetime.strptime(request.json['new_end_date'],'%d.%m.%Y')
+    new_start_date = datetime.strptime(request.json['new_start_date'],'%d.%m.%Y').date()
+    new_end_date = datetime.strptime(request.json['new_end_date'],'%d.%m.%Y').date()
     try:
         DBAccess.change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date)
         user_book_entries = DBAccess.get_user_book_entries(user_id)
