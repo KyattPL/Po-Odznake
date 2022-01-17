@@ -1,3 +1,4 @@
+
 from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.local import F
 from werkzeug.security import safe_str_cmp
@@ -9,7 +10,6 @@ login_manager = LoginManager()
 
 user_list = []
 
-
 @login_manager.user_loader
 def load_user(user_id):
     for usr in user_list:
@@ -18,6 +18,8 @@ def load_user(user_id):
     return None
 
 def authenticate(username, password):
+    if type(username) != str or type(password) != str:
+        raise TypeError("Username and password must be strings")
     user = DBAccess.get_user_by_name(username)
     sha_engine = hashlib.sha256()
     sha_engine.update(password.encode('utf-8'))

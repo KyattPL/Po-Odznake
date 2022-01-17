@@ -35,7 +35,7 @@ def get_user_segments():
 
 @routes.route("/get_trips", methods = ['GET'])
 @login_required
-def get_user_segments():
+def get_trips():
     trips_list = DBAccess.get_trips()
     return jsonify(Schemas.trips_schema.dump(trips_list))
 
@@ -102,9 +102,9 @@ def add_new_entry():
     user_id = current_user.get_id()
     entry_date = datetime.strptime(request.json['entry_date'],'%d:%m:%Y')
     start_date = datetime.strptime(request.json['start_date'],'%d:%m:%Y')
-    end_date = datetime.strptime(request.json['end_date'],'%d:%m:%Y')
+    #end_date = datetime.strptime(request.json['end_date'],'%d:%m:%Y')
     trip_id = int(request.json['trip_id'])
-    DBAccess.add_new_entry(user_id, entry_date, start_date, end_date, trip_id)
+    DBAccess.add_new_entry(user_id, entry_date, start_date, trip_id)
     user_book_entries = DBAccess.get_user_book_entries(user_id)
     return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
 
