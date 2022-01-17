@@ -32,7 +32,7 @@ class TripsSchema(ma.Schema):
 
 class BookEntriesSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'trip', 'entry_date')
+        fields = ('id', 'trip', 'entry_date', 'start_date', 'end_date')
     
     trip = ma.Nested(TripsSchema)
     
