@@ -16,8 +16,8 @@ def index():
 
 @routes.route("/add")
 def add_language():
-    DBAccess.delete_book_entry(1, 9)
-    return jsonify({"status": "Ok"})
+    all_user_entries = DBAccess.get_user_book_entries(1)
+    return jsonify(Schemas.book_entries_schema.dump(all_user_entries))
 
 @routes.route("/get_segments", methods = ['GET'])
 def get_segments():

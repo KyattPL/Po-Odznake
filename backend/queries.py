@@ -171,7 +171,14 @@ class DBAccess():
     @staticmethod
     def get_user_book_entries(usr_id):
         try:
-            return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, BooksEntries.trip.points).all()
+            #trip = BooksEntries.query.join(Tourists, BooksEntries.book_id == Books.serial_number).join(Trips)
+            #print(BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).join(Trips, Trips.id == BooksEntries.trip_id).add_column(Trips.points).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, Trips.points).all())
+            user_book_entries_w_points = BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).join(Trips, Trips.id == BooksEntries.trip_id).add_column(Trips.points).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, Trips.points).all()
+            user_book_entries = []
+            for book_entry in user_book_entries_w_points:
+                user_book_entries.append(book_entry[0])
+            return user_book_entries
+            #return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).all()
         except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
             raise db_error 
