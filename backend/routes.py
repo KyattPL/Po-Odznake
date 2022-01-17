@@ -13,9 +13,9 @@ routes = Blueprint('routes', __name__)
 def index():
     return current_app.send_static_file("index.html")
 
-@routes.route("/add")
-def add_language():
-    pass
+#@routes.route("/add")
+#def add_language():
+   #pass
 
 @routes.route("/get_segments", methods = ['GET'])
 def get_segments():
@@ -32,6 +32,12 @@ def get_user_segments():
     user_id = current_user.get_id()
     user_segments_list = DBAccess.get_user_segments(user_id)
     return jsonify(Schemas.segments_schema.dump(user_segments_list))
+
+@routes.route("/get_trips", methods = ['GET'])
+@login_required
+def get_user_segments():
+    trips_list = DBAccess.get_trips()
+    return jsonify(Schemas.trips_schema.dump(trips_list))
 
 @routes.route("/get_points", methods = ['GET'])
 def get_points():
@@ -128,7 +134,6 @@ def login_user():
     username = request.json['username']
     password = request.json['password']
     return {"auth_status": True} if authenticate(username, password) else {"auth_status": False}
-
 
 
 @routes.route("/curr_identity", methods = ['GET'])

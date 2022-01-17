@@ -63,9 +63,9 @@ class Trips(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     starting_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
     ending_point_id = db.Column(db.Integer, db.ForeignKey('geo_points.id'), nullable=False)
+    points = db.Column(db.Integer, nullable=False)
     starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('trips', lazy=True))
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('trips2', lazy=True))
-
     def __init__(self, starting_point_id, ending_point_id):
         self.starting_point_id = starting_point_id
         self.ending_point_id = ending_point_id
