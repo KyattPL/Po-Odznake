@@ -34,7 +34,7 @@ function BookModal({ shouldShow, closeModal }) {
 
     const updateEntries = (newEntries) => {
         setEntries(newEntries);
-        if (newEntries.length !== 0) {
+        if (newEntries !== null && newEntries.length !== 0) {
             setIsEmpty(false);
         } else {
             setIsEmpty(true);

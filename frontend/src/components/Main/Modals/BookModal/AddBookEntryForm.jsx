@@ -27,7 +27,7 @@ function AddBookEntryForm({ setIsFormOpen, updateEntries }) {
 
     const [beginDate, setBeginDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [selectedTrip, setSelectedTrip] = useState('');
 
     useEffect(() => {
         fetchGetTrips().then(res => {
@@ -36,32 +36,37 @@ function AddBookEntryForm({ setIsFormOpen, updateEntries }) {
         }).catch(err => console.error(err));
     }, []);
 
+    const selectTrip = (event) => {
+        setSelectedTrip(event.target.value);
+    };
+
     const addBookEntry = () => {
         fetchAddNewEntry(beginDate, endDate, selectedTrip).then(res => {
             updateEntries(res);
-        }).catch(err => console.error(err));
+        }).then(() => setIsFormOpen(false)).catch(err => console.error(err));
     };
 
     return (
         <>
             <TableCell align="center">
                 <LocalizationProvider dateAdapter={AdapterDateFns} locale={plLocale}>
-                    <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)}
+                    <DatePicker value={beginDate} onChange={(val) => setBeginDate(val)} mask="__.__.____"
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data rozpoczęcia" />} />
                 </LocalizationProvider>
             </TableCell>
             <TableCell align="center">
                 <LocalizationProvider dateAdapter={AdapterDateFns} locale={plLocale}>
-                    <DatePicker value={endDate} onChange={(val) => setEndDate(val)}
+                    <DatePicker value={endDate} onChange={(val) => setEndDate(val)} mask="__.__.____"
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data zakończenia" />} />
                 </LocalizationProvider>
             </TableCell>
-            <TableCell align="center" colSpan={3}>
+            <TableCell colSpan={3}>
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Wycieczka</InputLabel>
-                    <Select value={selectedTrip} onChange={(event) => setSelectedTrip(event.currentTarget.value)} label="Wycieczka">
+                    <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
+                        MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
                         {trips != null ? trips.map(trip =>
-                            <MenuItem key={trip['id']} value={trip['id']}>
+                            <MenuItem key={trip['id']} value={trip['id']} style={{ whiteSpace: 'normal', width: '100%' }}>
                                 {trip['starting_point']['name'] + " -> " + trip['ending_point']['name']}
                             </MenuItem>
                         ) : <MenuItem>CANT LOAD TRIPS</MenuItem>}

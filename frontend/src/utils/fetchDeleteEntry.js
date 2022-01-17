@@ -1,6 +1,9 @@
 export default async function fetchDeleteEntry(tripId) {
-    return await fetch("/change_entry", {
-        body: { 'trip_id': tripId },
+
+    console.log(tripId);
+
+    return await fetch("/delete_entry", {
+        body: JSON.stringify({ 'trip_id': tripId }),
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
