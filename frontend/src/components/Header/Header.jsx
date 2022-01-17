@@ -11,7 +11,7 @@ import ModalSwitch from "../Main/Modals/ModalSwitch";
 
 import "../../styles/Header/header.css";
 
-function Header({ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }) {
+function Header({ isLoggedIn, setIsLoggedIn }) {
 
     const [modalToShow, setModalToShow] = useState(null);
     const [shouldShowModal, setShouldShowModal] = useState(false);
@@ -31,7 +31,7 @@ function Header({ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken }) {
                 </Toolbar>
             </AppBar>
             <ModalSwitch modalToShow={modalToShow} shouldShow={shouldShowModal} displayModal={displayModal}
-                setIsLoggedIn={setIsLoggedIn} accessToken={accessToken} setAccessToken={setAccessToken} />
+                setIsLoggedIn={setIsLoggedIn} />
         </Grid>
     );
 }

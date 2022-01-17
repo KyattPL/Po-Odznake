@@ -10,7 +10,7 @@ import fetchLogin from "../../../../utils/fetchLogin";
 
 import "../../../../styles/Main/Modal/login_modal.css";
 
-function LoginModalForm({ setAccessToken, setIsLoggedIn, closeModal }) {
+function LoginModalForm({ setIsLoggedIn, closeModal }) {
 
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
@@ -27,17 +27,18 @@ function LoginModalForm({ setAccessToken, setIsLoggedIn, closeModal }) {
 
     const handleLogin = async () => {
         const resp = await fetchLogin(login, password);
-        if (resp['status_code'] === 401) {
-            setIsError(true);
-            setErrorMsg("Niepoprawny login lub hasło!");
-        } else if (String(resp).valueOf() === "SyntaxError: Unexpected token < in JSON at position 0") {
+
+        if (resp != null) {
+            if (resp['auth_status']) {
+                setIsLoggedIn(true);
+                closeModal();
+            } else {
+                setIsError(true);
+                setErrorMsg("Niepoprawny login lub hasło!");
+            }
+        } else {
             setIsError(true);
             setErrorMsg("Wystąpił nieoczekiwany błąd na serwerze!");
-        } else {
-            console.log(resp);
-            setAccessToken(resp["access_token"]);
-            setIsLoggedIn(true);
-            closeModal();
         }
     }
 

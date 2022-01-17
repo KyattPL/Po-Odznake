@@ -9,6 +9,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import "../../../../styles/Main/Modal/modal.css";
 import "../../../../styles/Main/Modal/logout_modal.css";
+import fetchLogout from "../../../../utils/fetchLogout";
 
 function LogoutModal({ shouldShow, closeModal, setIsLoggedIn }) {
 
@@ -17,7 +18,15 @@ function LogoutModal({ shouldShow, closeModal, setIsLoggedIn }) {
     };
 
     const handleLogout = () => {
-        setIsLoggedIn(false);
+        fetchLogout().then(res => {
+            if (res != null) {
+                if (res['logout_successfull']) {
+                    setIsLoggedIn(false);
+                }
+            } else {
+                console.error("NIE UDAŁO SIĘ WYLOGOWAĆ");
+            }
+        }).catch(err => console.err);
         closeModal();
     };
 
