@@ -1,5 +1,6 @@
 
 from db_models import *
+from sqlalchemy import or_, and_
 import sqlalchemy.exc
 import logging
 
@@ -18,7 +19,12 @@ class DBAccess():
     @staticmethod
     def get_segments(usr_id):
         try:
-            return Segments.query.filter(Segments.tourist_id==usr_id or Segments.tourist_id==None).all()
+            return Segments.query.filter(
+                or_(
+                    Segments.tourist_id==usr_id,
+                    Segments.tourist_id==None
+                )
+            ).all()
         except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
             raise db_error
@@ -41,7 +47,13 @@ class DBAccess():
     @staticmethod    
     def delete_segment(point_A_id, point_B_id, user_id):
         try:
-            segs_to_del = Segments.query.filter(Segments.tourist_id == user_id and (Segments.starting_point_id == point_A_id and Segments.ending_point_id == point_B_id or Segments.ending_point_id == point_A_id and Segments.starting_point_id == point_B_id))
+            segs_to_del = Segments.query.filter(
+                and_( Segments.tourist_id == user_id, 
+                    or_( 
+                        and_( Segments.starting_point_id == point_A_id, Segments.ending_point_id == point_B_id), 
+                        and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
+                )
+            )
 
             for seg in segs_to_del:
                 db.session.delete(seg)
@@ -53,7 +65,13 @@ class DBAccess():
     @staticmethod
     def update_segment(user_id, description, distance, point_A_id, point_B_id, new_point_A_id, new_point_B_id):
         try:
-            segs_to_upd = Segments.query.filter(Segments.tourist_id == user_id and (Segments.starting_point_id == point_A_id and Segments.ending_point_id == point_B_id or Segments.ending_point_id == point_A_id and Segments.starting_point_id == point_B_id))
+            segs_to_upd = Segments.query.filter(
+                and_( Segments.tourist_id == user_id, 
+                    or_( 
+                        and_( Segments.starting_point_id == point_A_id, Segments.ending_point_id == point_B_id), 
+                        and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
+                )
+            )
             point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id)
             point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id)
             points = int(distance / 1000) + abs(point_A.height - point_B.height)
@@ -153,7 +171,7 @@ class DBAccess():
     @staticmethod
     def get_user_book_entries(usr_id):
         try:
-            return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).all()
+            return BooksEntries.query.join(Books, BooksEntries.book_id == Books.serial_number).join(Tourists, Tourists.book_id == Books.serial_number).filter(Tourists.id == usr_id).order_by(BooksEntries.entry_date, BooksEntries.trip.points).all()
         except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
             raise db_error 
@@ -181,7 +199,7 @@ class DBAccess():
     def change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date):
         try:
             curr_usr = Tourists.query.filter(Tourists.id == user_id).first()
-            book_entry = BooksEntries.query.filter(BooksEntries.book_id == curr_usr.book_id and BooksEntries.trip_id == trip_id).first()
+            book_entry = BooksEntries.query.filter(BooksEntries.book_id == curr_usr.book_id, BooksEntries.trip_id == trip_id).first()
             book_entry.trip_id = new_trip_id
             book_entry.start_date = new_start_date
             book_entry.end_date = new_end_date
@@ -194,7 +212,7 @@ class DBAccess():
     def delete_book_entry(user_id, trip_id):
         try:
             curr_usr = Tourists.query.filter(Tourists.id == user_id).first()
-            book_entry = BooksEntries.query.filter(BooksEntries.book_id == curr_usr.book_id and BooksEntries.trip_id == trip_id).first()
+            book_entry = BooksEntries.query.filter(BooksEntries.book_id == curr_usr.book_id, BooksEntries.trip_id == trip_id).first()
             db.session.delete(book_entry)
             db.session.commit()
         except sqlalchemy.exc.OperationalError as db_error:

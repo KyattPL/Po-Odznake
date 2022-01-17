@@ -14,9 +14,10 @@ routes = Blueprint('routes', __name__)
 def index():
     return current_app.send_static_file("index.html")
 
-#@routes.route("/add")
-#def add_language():
-   #pass
+@routes.route("/add")
+def add_language():
+    DBAccess.delete_book_entry(1, 9)
+    return jsonify({"status": "Ok"})
 
 @routes.route("/get_segments", methods = ['GET'])
 def get_segments():
