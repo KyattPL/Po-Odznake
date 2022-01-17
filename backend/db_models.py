@@ -2,6 +2,7 @@ import email
 import re
 from sqlalchemy.orm import backref
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date
 import hashlib
 
 db = SQLAlchemy()
@@ -112,6 +113,12 @@ class Trips(db.Model):
     starting_point = db.relationship('GeoPoints', foreign_keys=starting_point_id, backref=db.backref('trips', lazy=True))
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('trips2', lazy=True))
     def __init__(self, starting_point_id, ending_point_id, points):
+        if type(starting_point_id) != int or type(ending_point_id) != int:
+            raise TypeError("Both ids of starting and ending points must be integers")
+        if type(points) != int:
+            raise TypeError("Number of points must be an integer number")
+        if points < 1:
+            raise ValueError("Number of points must be at least equal to 1")
         self.starting_point_id = starting_point_id
         self.ending_point_id = ending_point_id
         self.points = points
@@ -132,6 +139,25 @@ class Segments(db.Model):
     ending_point = db.relationship('GeoPoints', foreign_keys=ending_point_id, backref=db.backref('segments2', lazy=True))
 
     def __init__(self, points, description, is_active, distance, starting_point_id, ending_point_id, tourist_id):
+        if type(points) != int:
+            raise TypeError("Number of points must be an integer number")
+        if type(description) != str:
+            raise TypeError("Description must be a string")
+        if type(is_active) != bool:
+            raise TypeError("Is active information must be passed as boolean must be a string")
+        if type(distance) != int:
+            raise TypeError("Distance must be an integer number")
+        if type(starting_point_id) != int or type(ending_point_id) != int:
+            raise TypeError("Both ids of starting and ending points must be integers")
+        if tourist_id != None and type(tourist_id) != int:
+            raise TypeError("Tourist id must be an integer number")
+        if points < 1:
+            raise ValueError("Number of points must be at least equal to 1")
+        if len(description) > 100:
+            raise ValueError("Description too long")
+        if distance < 0:
+            raise ValueError("Distance must be positive integer")
+
         self.points = points
         self.description = description
         self.is_active = is_active
@@ -149,10 +175,17 @@ class BooksEntries(db.Model):
     
     trip = db.relationship("Trips", backref=db.backref("books_entries", lazy=True))
 
-    def __init__(self, trip_of_tourist_id, book_id, entry_date, start_date, end_date):
+    def __init__(self, trip_of_tourist_id, book_id, start_date, end_date):
+        if type(trip_of_tourist_id) != int or type(book_id) != int:
+            raise TypeError("Trip of tourist id and book id must be integers")
+        if type(start_date) != date or type(end_date) != date:
+            raise TypeError("Staring date and ending date must be date objects")
+        if start_date > end_date:
+            raise ValueError("Starting date must be earlier than ending date")
+
         self.trip_id = trip_of_tourist_id
         self.book_id = book_id
-        self.entry_date = entry_date
+        self.entry_date = date.today()
         self.start_date = start_date
         self.end_date = end_date
 
@@ -163,5 +196,11 @@ class SegmentsInRoutes(db.Model):
     segment = db.relationship('Segments', backref=db.backref('segmentsinroutes', lazy=True))
 
     def __init__(self, segment_id, route_id):
+        if type(segment_id) != int:
+            raise TypeError("Segment id must be an integer")
+
+        if type(route_id) != int:
+            raise TypeError("Route id must be an integer")
+
         self.segment_id = segment_id
         self.route_id = route_id

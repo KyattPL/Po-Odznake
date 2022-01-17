@@ -154,7 +154,7 @@ class DBAccess():
     def add_new_entry(user_id, entry_date, start_date, end_date, trip_id):
         try:
             curr_usr = Tourists.query.filter(Tourists.id == user_id).first()
-            book_entry = BooksEntries(trip_id, curr_usr.book_id, entry_date, start_date, end_date)
+            book_entry = BooksEntries(trip_id, curr_usr.book_id, start_date, end_date)
             db.session.add(book_entry)
             db.session.commit()
         except sqlalchemy.exc.OperationalError:
