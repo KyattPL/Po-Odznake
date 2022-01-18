@@ -20,14 +20,20 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
     const [segments, setSegments] = useState([]);
 
     useEffect(() => {
+        let isSubscribed = true;
+
         fetchGetUserSegments().then(res => {
-            setSegments(res);
-            if (res.length !== 0) {
-                setIsEmpty(false);
-            } else {
-                setIsEmpty(true);
+            if (isSubscribed) {
+                setSegments(res);
+                if (res.length !== 0) {
+                    setIsEmpty(false);
+                } else {
+                    setIsEmpty(true);
+                }
             }
         }).catch(err => console.error(err));
+
+        return () => (isSubscribed = false);
     }, []);
 
     const updateSegments = (newSegments) => {
@@ -50,7 +56,7 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
-                    {isEmpty ? <LineSegmentsEmpty /> : <LineSegmentsTable segments={segments} updateSegments={updateSegments}/>}
+                    {isEmpty ? <LineSegmentsEmpty /> : <LineSegmentsTable segments={segments} updateSegments={updateSegments} />}
                 </Container>
             </Fade>
         </Modal>

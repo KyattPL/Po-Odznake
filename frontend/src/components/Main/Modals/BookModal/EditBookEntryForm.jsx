@@ -28,13 +28,17 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
 
     const [beginDate, setBeginDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [selectedTrip, setSelectedTrip] = useState(tripId);
+    const [selectedTrip, setSelectedTrip] = useState('');
 
     useEffect(() => {
-        fetchGetTrips().then(res => {
-            setTrips(res);
-        }).catch(err => console.error(err));
-    }, []);
+        let isSubscribed = true;
+
+        fetchGetTrips().then(res => isSubscribed ? setTrips(res) : null)
+            .then(() => isSubscribed ? setSelectedTrip(tripId) : null)
+            .catch(err => console.error(err));
+
+        return () => (isSubscribed = false);
+    }, [tripId]);
 
     const selectTrip = (event) => {
         setSelectedTrip(event.target.value);

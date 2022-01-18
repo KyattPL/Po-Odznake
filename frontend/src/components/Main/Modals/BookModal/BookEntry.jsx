@@ -26,9 +26,6 @@ function BookEntry({ entry, updateEntries }) {
         setRowState("normal");
     }
 
-    console.log(entry);
-
-    // TODO: getTripById bo potrzeba 'description' i 'points'do wyświetlenia + id wpisu trzeba
     return (
         <>
             {rowState === "normal" ?

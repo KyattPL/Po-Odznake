@@ -15,7 +15,8 @@ function DeleteLineSegment({ closeForm, pointA, pointB, updateSegments }) {
     const deleteSegment = () => {
         fetchDeleteSegment(pointA, pointB).then(res => {
             updateSegments(res);
-        }).then(() => closeForm()).catch(err => console.error(err));
+            closeForm();
+        }).catch(err => console.error(err));
     };
 
     return (

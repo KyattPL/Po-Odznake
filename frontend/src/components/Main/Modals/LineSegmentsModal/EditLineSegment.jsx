@@ -19,14 +19,17 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }
 
     const [points, setPoints] = useState([]);
 
-    const [desription, setDescription] = useState(null);
+    const [description, setDescription] = useState(null);
     const [firstPoint, setFirstPoint] = useState(pointA);
     const [secondPoint, setSecondPoint] = useState(pointB);
 
     useEffect(() => {
-        fetchGetUserSegments().then(res => {
-            setPoints(res);
-        }).catch(err => console.error(err));
+        let isSubscribed = true;
+
+        fetchGetUserSegments().then(res => isSubscribed ? setPoints(res) : null)
+            .catch(err => console.error(err));
+
+        return () => (isSubscribed = false);
     }, []);
 
     const selectPointA = (event) => {
@@ -40,8 +43,8 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }
     // TODO: liczyć nowy dystans trzeba
     const handleSegmentUpdate = () => {
         fetchEditSegment(pointA, pointB, description, "TODO", firstPoint, secondPoint)
-        .then(res => updateSegments(res)).then(() => closeForm())
-        .catch(err => console.error(err));
+            .then(res => updateSegments(res)).then(() => closeForm())
+            .catch(err => console.error(err));
     };
 
     return (
@@ -50,7 +53,7 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Pierwszy punkt</InputLabel>
                     <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt">
-                        {points !== null ? points.map(point => 
+                        {points !== null ? points.map(point =>
                             <MenuItem key={point['id']} value={point['id']}>
                                 {point['name']}
                             </MenuItem>
@@ -62,7 +65,7 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Drugi punkt</InputLabel>
                     <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt">
-                        {points !== null ? points.map(point => 
+                        {points !== null ? points.map(point =>
                             <MenuItem key={point['id']} value={point['id']}>
                                 {point['name']}
                             </MenuItem>
@@ -71,7 +74,7 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }
                 </FormControl>
             </TableCell>
             <TableCell align="center" colSpan={3}>
-                <TextField multiline value={desription} onChange={(event) => setDescription(event.target.value)}
+                <TextField multiline value={description} onChange={(event) => setDescription(event.target.value)}
                     sx={{ width: '100%' }} label="Opis" />
             </TableCell>
             <TableCell align="center">

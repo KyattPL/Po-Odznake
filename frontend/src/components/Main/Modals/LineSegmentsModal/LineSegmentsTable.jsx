@@ -44,7 +44,7 @@ function LineSegmentsTable({ segments, updateSegments }) {
                         ? segments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : segments
                     ).map((segment) => (
-                        <LineSegment key={segment['id']} segment={segment} updateSegments={updateSegments}/>
+                        <LineSegment key={segment['id']} segment={segment} updateSegments={updateSegments} />
                     ))}
 
                     {emptyRows > 0 && (
@@ -59,7 +59,7 @@ function LineSegmentsTable({ segments, updateSegments }) {
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[rowsPerPage]}
                             colSpan={7}
-                            count={segments !== null ? segments.length : 0}
+                            count={Array.isArray(segments) ? segments.length : 0}
                             page={page}
                             onPageChange={handleChangePage}
                             ActionsComponent={ModalTableActions}
