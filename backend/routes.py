@@ -1,3 +1,4 @@
+
 import sqlalchemy.exc
 from flask import Blueprint, jsonify, current_app, request
 #from flask_jwt import JWT, jwt_required, current_identity
@@ -76,10 +77,23 @@ def add_new_segment():
 @routes.route("/add_new_route", methods = ['POST'])
 @login_required
 def add_new_route():
-    segments_list = request.json['segments']
+    points_list = request.json
+    pt_n = 0
+    pt_n_1 = 1
+    segments_list = []
+    if len(points_list) < 3:
+        return jsonify({"status":"Trip must include at least 2 segments"}), 400
     try:
+        while pt_n_1 != len(points_list):
+            segment = DBAccess.get_segment(points_list[pt_n]["id"], points_list[pt_n_1]["id"])
+            if segment == None:
+                return jsonify({"status":"Encountered nonexistent segment"}), 400
+            segments_list.append(segment)
+            pt_n += 1
+            pt_n_1 += 1 
+        
         DBAccess.add_route(segments_list)
-        return jsonify({"status":"OK"}), 200
+        return jsonify({"status":"Added segments to a route"}), 200
     except sqlalchemy.exc.OperationalError:
         return jsonify({"message":"Database connection error"}), 500
 

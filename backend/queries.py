@@ -129,6 +129,14 @@ class DBAccess():
             raise db_error
 
     @staticmethod
+    def get_segment(starting_point_id, ending_point_id):
+        try:
+            return Segments.query.filter(Segments.starting_point_id == starting_point_id, Segments.ending_point_id == ending_point_id).first()
+        except sqlalchemy.exc.OperationalError as db_error:
+            logging.error("Database connection lost!")
+            raise db_error
+
+    @staticmethod
     def get_points():
         try:
             return GeoPoints.query.all()
