@@ -6,16 +6,38 @@ import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 
 import CancelIcon from "@mui/icons-material/Cancel";
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 import LineSegmentsEmpty from "./LineSegmentsEmpty";
 import LineSegmentsTable from "./LineSegmentsTable";
+
+import fetchGetUserSegments from "../../../../utils/fetchGetUserSegments";
 
 import "../../../../styles/Main/Modal/modal.css";
 
 function LineSegmentsModal({ shouldShow, closeModal }) {
 
     const [isEmpty, setIsEmpty] = useState(true);
+    const [segments, setSegments] = useState([]);
+
+    useEffect(() => {
+        fetchGetUserSegments().then(res => {
+            setSegments(res);
+            if (res.length !== 0) {
+                setIsEmpty(false);
+            } else {
+                setIsEmpty(true);
+            }
+        }).catch(err => console.error(err));
+    }, []);
+
+    const updateSegments = (newSegments) => {
+        setSegments(newSegments);
+        if (newSegments !== null && newSegments.length !== 0) {
+            setIsEmpty(false);
+        } else {
+            setIsEmpty(true);
+        }
+    };
 
     const handleCloseModalButton = () => {
         closeModal();
@@ -28,10 +50,7 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
-                    <IconButton onClick={() => setIsEmpty(!isEmpty)}>
-                        <ChangeCircleIcon className="change-modal-icon" />
-                    </IconButton>
-                    {isEmpty ? <LineSegmentsEmpty /> : <LineSegmentsTable />}
+                    {isEmpty ? <LineSegmentsEmpty /> : <LineSegmentsTable segments={segments} updateSegments={updateSegments}/>}
                 </Container>
             </Fade>
         </Modal>

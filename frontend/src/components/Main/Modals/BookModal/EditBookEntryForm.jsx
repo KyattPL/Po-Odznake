@@ -32,7 +32,6 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
 
     useEffect(() => {
         fetchGetTrips().then(res => {
-            console.log(res);
             setTrips(res);
         }).catch(err => console.error(err));
     }, []);

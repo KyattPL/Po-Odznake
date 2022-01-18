@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -12,29 +12,61 @@ import TextField from "@mui/material/TextField";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from "@mui/icons-material/Done";
 
-function EditLineSegment({ closeForm }) {
+import fetchEditSegment from "../../../../utils/fetchEditSegment";
+import fetchGetUserSegments from "../../../../utils/fetchGetUserSegments";
+
+function EditLineSegment({ closeForm, updateSegments, pointA, pointB, distance }) {
+
+    const [points, setPoints] = useState([]);
 
     const [desription, setDescription] = useState(null);
-    const [firstPoint, setFirstPoint] = useState(null);
-    const [secondPoint, setSecondPoint] = useState(null);
+    const [firstPoint, setFirstPoint] = useState(pointA);
+    const [secondPoint, setSecondPoint] = useState(pointB);
+
+    useEffect(() => {
+        fetchGetUserSegments().then(res => {
+            setPoints(res);
+        }).catch(err => console.error(err));
+    }, []);
+
+    const selectPointA = (event) => {
+        setFirstPoint(event.target.value);
+    };
+
+    const selectPointB = (event) => {
+        setSecondPoint(event.target.value);
+    }
+
+    // TODO: liczyć nowy dystans trzeba
+    const handleSegmentUpdate = () => {
+        fetchEditSegment(pointA, pointB, description, "TODO", firstPoint, secondPoint)
+        .then(res => updateSegments(res)).then(() => closeForm())
+        .catch(err => console.error(err));
+    };
 
     return (
         <TableRow>
-            <TableCell align="center">
+            <TableCell>
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Pierwszy punkt</InputLabel>
-                    <Select value={firstPoint} onChange={(event) => setFirstPoint(event.currentTarget.value)} label="Pierwszy punkt">
-                        <MenuItem value={1}>pierwszy punkt</MenuItem>
-                        <MenuItem value={2}>drugi punkt</MenuItem>
+                    <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt">
+                        {points !== null ? points.map(point => 
+                            <MenuItem key={point['id']} value={point['id']}>
+                                {point['name']}
+                            </MenuItem>
+                        ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
                     </Select>
                 </FormControl>
             </TableCell>
-            <TableCell align="center">
+            <TableCell>
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Drugi punkt</InputLabel>
-                    <Select value={secondPoint} onChange={(event) => setSecondPoint(event.currentTarget.value)} label="Drugi punkt">
-                        <MenuItem value={1}>pierwszy punkt</MenuItem>
-                        <MenuItem value={2}>drugi punkt</MenuItem>
+                    <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt">
+                        {points !== null ? points.map(point => 
+                            <MenuItem key={point['id']} value={point['id']}>
+                                {point['name']}
+                            </MenuItem>
+                        ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
                     </Select>
                 </FormControl>
             </TableCell>
@@ -43,7 +75,7 @@ function EditLineSegment({ closeForm }) {
                     sx={{ width: '100%' }} label="Opis" />
             </TableCell>
             <TableCell align="center">
-                <Button variant="contained" className="confirm-edit-be-button">
+                <Button variant="contained" className="confirm-edit-be-button" onClick={handleSegmentUpdate}>
                     <DoneIcon />
                 </Button>
             </TableCell>

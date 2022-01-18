@@ -1,6 +1,6 @@
 export default async function fetchAddNewRoute(segments) {
     return await fetch("/add_new_route", {
-        body: { 'segments': segments },
+        body: JSON.stringify({ 'segments': segments }),
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

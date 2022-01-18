@@ -13,25 +13,13 @@ import TableRow from '@mui/material/TableRow';
 import LineSegment from "./LineSegment";
 import ModalTableActions from '../ModalTableActions';
 
-function createData(segmentID, firstPoint, secondPoint, description, points, distance) {
-    return { segmentID, firstPoint, secondPoint, description, points, distance };
-}
-
-const rows = [
-    createData(4, 'Barania Góra', 'Kobyła', 'Przejście przez czarną górkę', 21, 15400),
-    createData(3, 'Świątynia Wang', 'Karpacz, Równienka', 'Przejście przez białą górkę', 2, 700),
-    createData(2, 'Karpatka', 'Zapora na Łomnicy', 'Przejście koło strumyczka', 2, 1500),
-    createData(1, 'Karpacz, ul. Leśna', 'Karpacz, ul. Sarnia', '', 2, 1500),
-    createData(5, 'Łomniczka', 'Krucze Skały', 'Przejście niedaleko czarnego wąwozu', 1, 500)
-].sort((a, b) => (a.segmentID < b.segmentID ? 1 : -1));
-
 // TODO: poprawić stylizację tabelki i finito
-function LineSegmentsTable() {
+function LineSegmentsTable({ segments, updateSegments }) {
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - segments.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -52,12 +40,11 @@ function LineSegmentsTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0
-                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : rows
-                    ).map((row) => (
-                        // TODO: użyteczne będzie bardzo tripID po stronie frontendowej
-                        <LineSegment row={row} />
+                    {segments === null || !Array.isArray(segments) ? null : (rowsPerPage > 0
+                        ? segments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : segments
+                    ).map((segment) => (
+                        <LineSegment key={segment['id']} segment={segment} updateSegments={updateSegments}/>
                     ))}
 
                     {emptyRows > 0 && (
@@ -72,7 +59,7 @@ function LineSegmentsTable() {
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[rowsPerPage]}
                             colSpan={7}
-                            count={rows.length}
+                            count={segments !== null ? segments.length : 0}
                             page={page}
                             onPageChange={handleChangePage}
                             ActionsComponent={ModalTableActions}
