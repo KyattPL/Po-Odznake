@@ -30,10 +30,12 @@ function AddBookEntryForm({ setIsFormOpen, updateEntries }) {
     const [selectedTrip, setSelectedTrip] = useState('');
 
     useEffect(() => {
-        fetchGetTrips().then(res => {
-            console.log(res);
-            setTrips(res);
-        }).catch(err => console.error(err));
+        let isSubscribed = true;
+
+        fetchGetTrips().then(res => isSubscribed ? setTrips(res) : null)
+            .catch(err => console.error(err));
+
+        return () => (isSubscribed = false);
     }, []);
 
     const selectTrip = (event) => {

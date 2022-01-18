@@ -27,8 +27,6 @@ function BookModalTable({ entries, updateEntries }) {
         setPage(newPage);
     };
 
-    console.log(entries);
-
     return (
         <TableContainer component={Box} className="book-modal-table-container">
             <Table sx={{ minWidth: 500 }} stickyHeader aria-label="custom pagination table" className="book-modal-table">
@@ -66,7 +64,7 @@ function BookModalTable({ entries, updateEntries }) {
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[rowsPerPage]}
                             colSpan={7}
-                            count={entries !== null ? entries.length : 0}
+                            count={Array.isArray(entries) ? entries.length : 0}
                             page={page}
                             onPageChange={handleChangePage}
                             ActionsComponent={ModalTableActions}

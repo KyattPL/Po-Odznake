@@ -6,7 +6,6 @@ import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 
 import CancelIcon from "@mui/icons-material/Cancel";
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 import BookModalEmptyBook from "./BookModalEmptyBook";
 import BookModalTable from "./BookModalTable";
@@ -22,7 +21,6 @@ function BookModal({ shouldShow, closeModal }) {
 
     useEffect(() => {
         fetchGetUserEntries().then((res) => {
-            console.log(res);
             setEntries(res);
             if (res.length !== 0) {
                 setIsEmpty(false);
@@ -51,9 +49,6 @@ function BookModal({ shouldShow, closeModal }) {
                 <Container className="header-modal-box">
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
-                    </IconButton>
-                    <IconButton onClick={() => setIsEmpty(!isEmpty)}>
-                        <ChangeCircleIcon className="change-modal-icon" />
                     </IconButton>
                     {isEmpty ? <BookModalEmptyBook updateEntries={updateEntries} /> : <BookModalTable entries={entries} updateEntries={updateEntries} />}
                 </Container>

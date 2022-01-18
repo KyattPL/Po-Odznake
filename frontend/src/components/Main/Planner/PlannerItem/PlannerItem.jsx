@@ -7,24 +7,30 @@ import CircleIcon from '@mui/icons-material/Circle';
 import FlagIcon from '@mui/icons-material/Flag';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 
-// TODO: Zaimplementować usuwanie punktów z trasy
-function PlannerItem(props) {
+function PlannerItem({ point, setPoints, pos, index }) {
 
     let icon = null;
 
-    switch (props.pos) {
+    switch (pos) {
         case "start": icon = <FlagIcon className="planner-item-icon" />; break;
         case "end": icon = <SportsScoreIcon className="planner-item-icon" />; break;
         default: icon = <CircleIcon className="planner-item-icon" />; break;
     }
 
+    const handleRemovePoint = () => {
+        setPoints(prev => {
+            prev.splice(index, 1);
+            return [...prev];
+        });
+    };
+
     return (
         <Paper elevation={0} sx={{ padding: 2 }} className="planner-item">
             {icon}
             <Typography align="center" variant="body1" className="planner-item-text">
-                {props.point}
+                {point['name']}
             </Typography>
-            <IconButton sx={{ padding: 0 }}>
+            <IconButton sx={{ padding: 0 }} onClick={handleRemovePoint}>
                 <CancelIcon className="planner-item-cancel" />
             </IconButton>
         </Paper>

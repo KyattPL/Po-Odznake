@@ -3,6 +3,8 @@
     width: 90vw;
     height: 50%;
     position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
     top: 15%;
     padding: 10px;
     background-color: white;
@@ -25,8 +27,8 @@
     width: 30%;
     border: 2px solid black !important;
     border-radius: 10px !important;
-    position: absolute;
-    top: calc(100% - 200px);
+    position: relative;
+    top: 100px;
     left: 10%;
 }
 
@@ -35,7 +37,7 @@
     width: 30%;
     border: 2px solid black !important;
     border-radius: 10px !important;
-    position: absolute;
-    top: calc(100% - 200px);
+    position: relative;
+    top: 100px;
     left: 30%;
 }

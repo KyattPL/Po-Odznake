@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteLineSegment from "./DeleteLineSegment";
 import EditLineSegment from "./EditLineSegment";
 
-function LineSegment({ row }) {
+function LineSegment({ segment, updateSegments }) {
     const [rowState, setRowState] = useState("normal");
 
     const handleDeleteButton = () => {
@@ -28,21 +28,21 @@ function LineSegment({ row }) {
     return (
         <>
             {rowState === "normal" ?
-                <TableRow key={row.segmentID}>
+                <TableRow key={segment['id']}>
                     <TableCell sx={{ width: '150px' }} component="th" scope="row" className="book-modal-table-number-text">
-                        {row.firstPoint}
+                        {segment['starting_point']['name']}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.secondPoint}
+                        {segment['ending_point']['name']}
                     </TableCell>
                     <TableCell align="left" className="book-modal-table-number-text">
-                        {row.description}
+                        {segment['description']}
                     </TableCell>
                     <TableCell className="book-modal-table-trip-text">
-                        {row.points}
+                        {segment['points']}
                     </TableCell>
                     <TableCell className="book-modal-table-number-text" align="right">
-                        {row.distance} m
+                        {segment['distance']} m
                     </TableCell>
                     <TableCell>
                         <Button className="book-modal-edit-button" onClick={handleEditButton}>
@@ -54,8 +54,10 @@ function LineSegment({ row }) {
                             <CancelIcon />
                         </Button>
                     </TableCell>
-                </TableRow> : rowState === "delete" ? <DeleteLineSegment closeForm={restoreRowState} />
-                    : <EditLineSegment closeForm={restoreRowState} />
+                </TableRow> : rowState === "delete" ? <DeleteLineSegment closeForm={restoreRowState} 
+                        pointA={segment['starting_point']['id']} pointB={segment['ending_point']['id']} updateSegments={updateSegments}/>
+                    : <EditLineSegment closeForm={restoreRowState} updateSegments={updateSegments}
+                        pointA={segment['starting_point']['name']} pointB={segment['ending_point']['name']} distance={segment['distance']}/>
             }
         </>
     );
