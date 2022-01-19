@@ -23,6 +23,8 @@ def authenticate(username, password):
     user = DBAccess.get_user_by_name(username)
     sha_engine = hashlib.sha256()
     sha_engine.update(password.encode('utf-8'))
+    #print(sha_engine.hexdigest().encode('utf-8'))
+    #print(password)
     if user and safe_str_cmp(user.password, sha_engine.hexdigest().encode('utf-8')):
         new_user = User(username, password, user.id)
         new_user.authenticated = True

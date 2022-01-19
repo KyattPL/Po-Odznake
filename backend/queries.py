@@ -32,9 +32,9 @@ class DBAccess():
     @staticmethod
     def add_segment(description, distance, point_A_id, point_B_id, usr_id):
         try:
-            point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id)
-            point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id)
-            points = int(distance / 1000) + abs(point_A.height - point_B.height)
+            point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id).first()
+            point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id).first()
+            points = int(distance / 1000) + abs(point_A.height - point_B.height) // 100
             seg_A_B = Segments(points, description, True, distance, point_A_id, point_B_id, usr_id)
             seg_B_A = Segments(points, description, True, distance, point_A_id, point_B_id, usr_id)
             db.session.add(seg_A_B)
@@ -72,9 +72,9 @@ class DBAccess():
                         and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
                 )
             )
-            point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id)
-            point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id)
-            points = int(distance / 1000) + abs(point_A.height - point_B.height)
+            point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id).first()
+            point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id).first()
+            points = int(distance / 1000) + abs(point_A.height - point_B.height) // 100
             segs_to_upd[0].starting_point_id = new_point_A_id
             segs_to_upd[0].ending_point_id = new_point_B_id
             segs_to_upd[0].description = description
