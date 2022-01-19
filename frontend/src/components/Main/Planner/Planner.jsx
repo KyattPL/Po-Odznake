@@ -76,7 +76,7 @@ function Planner({ points, setPoints, isLoggedIn }) {
                             <Button variant="contained" className="planner-summary-button" onClick={openRouteModal}>
                                 Zapisz trasę
                             </Button>
-                            <SaveRouteModal shouldShow={showSaveRouteModal} closeModal={closeRouteModal} />
+                            <SaveRouteModal shouldShow={showSaveRouteModal} closeModal={closeRouteModal} points={points} />
                         </> : null
                     }
                 </Box>
