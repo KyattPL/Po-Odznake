@@ -54,10 +54,10 @@ function LineSegment({ segment, updateSegments }) {
                             <CancelIcon />
                         </Button>
                     </TableCell>
-                </TableRow> : rowState === "delete" ? <DeleteLineSegment closeForm={restoreRowState} 
-                        pointA={segment['starting_point']['id']} pointB={segment['ending_point']['id']} updateSegments={updateSegments}/>
+                </TableRow> : rowState === "delete" ? <DeleteLineSegment closeForm={restoreRowState}
+                    pointA={segment['starting_point']['id']} pointB={segment['ending_point']['id']} updateSegments={updateSegments} />
                     : <EditLineSegment closeForm={restoreRowState} updateSegments={updateSegments}
-                        pointA={segment['starting_point']['name']} pointB={segment['ending_point']['name']} distance={segment['distance']}/>
+                        pointA={segment['starting_point']['id']} pointB={segment['ending_point']['id']} />
             }
         </>
     );
