@@ -11,7 +11,7 @@ class DBAccess():
     @staticmethod
     def get_user_segments(usr_id):
         try:
-            return Segments.query.filter(Segments.tourist_id==usr_id).all()
+            return Segments.query.filter(Segments.tourist_id==usr_id, Segments.starting_point_id > Segments.ending_point_id).all()
         except sqlalchemy.exc.OperationalError as db_error:
             logging.error("Database connection lost!")
             raise db_error

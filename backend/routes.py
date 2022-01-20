@@ -67,6 +67,9 @@ def add_new_segment():
     distance = request.json['distance']
     point_A_id = int(request.json['point_a_id'])
     point_B_id = int(request.json['point_b_id'])
+    the_same_point = DBAccess.get_segment(point_A_id, point_B_id)
+    if the_same_point != None:
+        return jsonify({"message":"Cannot duplicate segment"}), 500
     try:
         DBAccess.add_segment(description, distance, point_A_id, point_B_id, user_id)
         user_segments_list = DBAccess.get_user_segments(user_id)
@@ -163,6 +166,8 @@ def change_book_entry():
     new_trip_id = int(request.json['new_trip_id'])
     new_start_date = datetime.strptime(request.json['new_start_date'],'%d.%m.%Y').date()
     new_end_date = datetime.strptime(request.json['new_end_date'],'%d.%m.%Y').date()
+    if (new_start_date > new_end_date):
+        return jsonify({"message":"Start date must earlier than end date"}), 400
     try:
         DBAccess.change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date)
         user_book_entries = DBAccess.get_user_book_entries(user_id)
