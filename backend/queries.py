@@ -71,7 +71,7 @@ class DBAccess():
                         and_( Segments.starting_point_id == point_A_id, Segments.ending_point_id == point_B_id), 
                         and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
                 )
-            )
+            ).all()
             point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id).first()
             point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id).first()
             points = int(distance / 1000) + abs(point_A.height - point_B.height) // 100
