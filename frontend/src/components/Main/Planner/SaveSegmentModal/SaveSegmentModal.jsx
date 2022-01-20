@@ -23,7 +23,7 @@ function SaveSegmentModal({ shouldShow, closeModal, pointA, pointB }) {
     const [isToastOpen, setIsToastOpen] = useState(false);
 
     const handleSaveRoute = () => {
-        fetchAddNewSegment(description, calcDistance(pointA, pointB), pointA['id'], pointB['id']).then(() => {
+        fetchAddNewSegment(description, Number.parseInt(calcDistance(pointA, pointB)), pointA['id'], pointB['id']).then(() => {
             closeModal();
             setIsToastOpen(true);
         }).catch(err => console.error(err));
