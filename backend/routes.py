@@ -63,9 +63,9 @@ def get_points():
 def get_points_dict():
     try:
         points_list = DBAccess.get_points()
-        point_dict_list = []
+        point_dict_list = {}
         for point in points_list:
-            point_dict_list.append({f"{point.id}":Schemas.point_schema.dump(point)})
+            point_dict_list[f"{point.id}"] = Schemas.point_schema.dump(point)
         return jsonify(point_dict_list)
     except sqlalchemy.exc.OperationalError:
         return jsonify({"message":"Database connection error"}), 500
