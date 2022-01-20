@@ -53,7 +53,7 @@ class DBAccess():
                         and_( Segments.starting_point_id == point_A_id, Segments.ending_point_id == point_B_id), 
                         and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
                 )
-            )
+            ).all()
 
             for seg in segs_to_del:
                 db.session.delete(seg)
