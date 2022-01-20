@@ -59,6 +59,17 @@ def get_points():
     except sqlalchemy.exc.OperationalError:
         return jsonify({"message":"Database connection error"}), 500
 
+@routes.route("/get_points_dict", methods = ['GET'])
+def get_points_dict():
+    try:
+        points_list = DBAccess.get_points()
+        point_dict_list = []
+        for point in points_list:
+            point_dict_list.append({f"{point.id}":Schemas.point_schema.dump(point)})
+        return jsonify(point_dict_list)
+    except sqlalchemy.exc.OperationalError:
+        return jsonify({"message":"Database connection error"}), 500
+
 @routes.route("/add_new_segment", methods = ['POST'])
 @login_required
 def add_new_segment():
