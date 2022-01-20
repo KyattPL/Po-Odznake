@@ -11,15 +11,20 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import RouteSavedToast from "../RouteSavedToast/RouteSavedToast";
 
+import fetchAddNewRoute from "../../../../utils/fetchAddNewRoute";
+
 import "../../../../styles/Main/Planner/save_route_modal.css";
 
-function SaveRouteModal({ shouldShow, closeModal }) {
+// TODO: Toast "Wystąpił błąd przy zapisywaniu trasy" + to samo dla odcinka
+function SaveRouteModal({ shouldShow, closeModal, points }) {
 
     const [isToastOpen, setIsToastOpen] = useState(false);
 
     const handleSaveRoute = () => {
-        closeModal();
-        setIsToastOpen(true);
+        fetchAddNewRoute(points).then(() => {
+            closeModal();
+            setIsToastOpen(true);
+        }).catch(err => console.error(err));
     };
 
     const handleCloseToast = () => {
