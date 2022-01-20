@@ -67,7 +67,8 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
             <TableCell colSpan={3}>
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel>Wycieczka</InputLabel>
-                    <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka">
+                    <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
+                        MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
                         {trips != null ? trips.map(trip =>
                             <MenuItem key={trip['id']} value={trip['id']}>
                                 {trip['starting_point']['name'] + " -> " + trip['ending_point']['name']}
