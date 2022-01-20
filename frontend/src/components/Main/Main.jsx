@@ -23,8 +23,6 @@ function Main({ isLoggedIn }) {
         return () => (isSubscribed = false);
     }, []);
 
-    console.log(points);
-
     return (
         <Grid item xs={12}>
             <Grid container className="main-container">
