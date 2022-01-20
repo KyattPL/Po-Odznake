@@ -36,7 +36,7 @@ class DBAccess():
             point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id).first()
             points = int(distance / 1000) + abs(point_A.height - point_B.height) // 100
             seg_A_B = Segments(points, description, True, distance, point_A_id, point_B_id, usr_id)
-            seg_B_A = Segments(points, description, True, distance, point_A_id, point_B_id, usr_id)
+            seg_B_A = Segments(points, description, True, distance, point_B_id, point_A_id, usr_id)
             db.session.add(seg_A_B)
             db.session.add(seg_B_A)
             db.session.commit()
