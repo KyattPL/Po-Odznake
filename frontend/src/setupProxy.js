@@ -31,6 +31,11 @@ module.exports = function (app) {
         changeOrigin: true
     }));
 
+    app.use(createProxyMiddleware("/get_points_dict", {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+    }));
+
     app.use(createProxyMiddleware("/add_new_segment", {
         target: 'http://localhost:5000',
         changeOrigin: true

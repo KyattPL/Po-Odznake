@@ -21,7 +21,6 @@ export default function calcRouteData(points) {
         altitudeSum += Math.abs(points[i]['height'] - points[i + 1]['height']);
     }
 
-    pointsSum = parseInt(distanceSum) + parseInt(altitudeSum / 100);
-
-    return [distanceSum.toFixed(2), altitudeSum, pointsSum];
+    pointsSum = Number.parseInt(distanceSum) + Number.parseInt(altitudeSum / 100);
+    return [Number.parseInt(distanceSum), altitudeSum, pointsSum];
 }

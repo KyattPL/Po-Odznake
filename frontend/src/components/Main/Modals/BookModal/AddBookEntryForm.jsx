@@ -32,7 +32,7 @@ function AddBookEntryForm({ setIsFormOpen, updateEntries }) {
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetTrips().then(res => isSubscribed ? setTrips(res) : null)
+        fetchGetTrips().then(res => isSubscribed ? setTrips(null) : null)
             .catch(err => console.error(err));
 
         return () => (isSubscribed = false);
@@ -63,7 +63,7 @@ function AddBookEntryForm({ setIsFormOpen, updateEntries }) {
                 </LocalizationProvider>
             </TableCell>
             <TableCell colSpan={3}>
-                <FormControl sx={{ width: '100%' }}>
+                <FormControl sx={{ width: '100%' }} data-testid="tripsSelector">
                     <InputLabel>Wycieczka</InputLabel>
                     <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>

@@ -14,7 +14,7 @@ import DoneIcon from "@mui/icons-material/Done";
 
 import calcDistance from "../../../../utils/calcDistance";
 import fetchEditSegment from "../../../../utils/fetchEditSegment";
-import fetchGetPoints from "../../../../utils/fetchGetPoints";
+import fetchGetPointsDict from "../../../../utils/fetchGetPointsDict";
 
 function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
 
@@ -29,7 +29,8 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetPoints().then(isSubscribed ? res => {
+        fetchGetPointsDict().then(isSubscribed ? res => {
+            console.log(res);
             setPoints(res);
             setFirstPoint(pointA);
             setSecondPoint(pointB);
@@ -49,7 +50,7 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
 
     // TODO: liczyć nowy dystans trzeba
     const handleSegmentUpdate = () => {
-        fetchEditSegment(pointA, pointB, description, Number.parseInt(calcDistance(firstPoint, secondPoint)),
+        fetchEditSegment(pointA, pointB, description, Number.parseInt(calcDistance(points[firstPoint], points[secondPoint])),
             firstPoint, secondPoint)
             .then(res => updateSegments(res)).then(() => closeForm())
             .catch(err => console.error(err));
@@ -62,9 +63,9 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
                     <InputLabel>Pierwszy punkt</InputLabel>
                     <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
-                        {points !== null ? points.map(point =>
-                            <MenuItem key={point['id']} value={point['id']}>
-                                {point['name']}
+                        {points !== null ? Object.keys(points).map(point =>
+                            <MenuItem key={points[point]['id']} value={points[point]['id']}>
+                                {points[point]['name']}
                             </MenuItem>
                         ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
                     </Select>
@@ -75,9 +76,9 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
                     <InputLabel>Drugi punkt</InputLabel>
                     <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
-                        {points !== null ? points.map(point =>
-                            <MenuItem key={point['id']} value={point['id']}>
-                                {point['name']}
+                        {points !== null ? Object.keys(points).map(point =>
+                            <MenuItem key={points[point]['id']} value={points[point]['id']}>
+                                {points[point]['name']}
                             </MenuItem>
                         ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
                     </Select>
