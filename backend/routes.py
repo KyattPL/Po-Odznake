@@ -80,7 +80,7 @@ def add_new_segment():
     point_B_id = int(request.json['point_b_id'])
     the_same_point = DBAccess.get_segment(point_A_id, point_B_id)
     if the_same_point != None:
-        return jsonify({"message":"Cannot duplicate segment"}), 500
+        return jsonify({"message":"Cannot duplicate segment"}), 400
     try:
         DBAccess.add_segment(description, distance, point_A_id, point_B_id, user_id)
         user_segments_list = DBAccess.get_user_segments(user_id)

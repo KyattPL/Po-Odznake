@@ -96,6 +96,7 @@ class DBAccess():
         try:
             rt = MountainRoutes()
             db.session.add(rt)
+            db.session.commit()
             for seg in segments:
                 seg_in_rt = SegmentsInRoutes(seg.id, rt.id)
                 db.session.add(seg_in_rt)
