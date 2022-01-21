@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Fade from "@mui/material/Fade";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -18,22 +19,33 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
 
     const [isEmpty, setIsEmpty] = useState(true);
     const [segments, setSegments] = useState([]);
+    const [errMsg, setErrMsg] = useState("");
 
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetUserSegments().then(res => {
-            if (isSubscribed) {
-                setSegments(res);
-                if (res.length !== 0) {
-                    setIsEmpty(false);
-                } else {
-                    setIsEmpty(true);
+        const retrieveUserSegments = () => {
+            fetchGetUserSegments().then(res => {
+                if (isSubscribed) {
+                    if (res.hasOwnProperty('message')) {
+                        setErrMsg(res['message']);
+                    } else {
+                        setSegments(res);
+                        clearInterval(retrieveTimer);
+                        setErrMsg("");
+                        if (res.length !== 0) {
+                            setIsEmpty(false);
+                        } else {
+                            setIsEmpty(true);
+                        }
+                    }
                 }
-            }
-        }).catch(err => console.error(err));
+            }).catch(err => console.error(err));
+        };
 
-        return () => (isSubscribed = false);
+        let retrieveTimer = setInterval(retrieveUserSegments, 5000);
+        retrieveUserSegments();
+        return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, []);
 
     const updateSegments = (newSegments) => {
@@ -56,6 +68,7 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
                     <IconButton className="close-modal-button" onClick={handleCloseModalButton}>
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
+                    <Typography color="red" variant="h6">{errMsg}</Typography>
                     {isEmpty ? <LineSegmentsEmpty /> : <LineSegmentsTable segments={segments} updateSegments={updateSegments} />}
                 </Container>
             </Fade>

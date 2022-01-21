@@ -8,6 +8,7 @@ import Select from "@mui/material/Select";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from "@mui/icons-material/Done";
@@ -24,23 +25,34 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
     const [firstPoint, setFirstPoint] = useState(pointA);
     const [secondPoint, setSecondPoint] = useState(pointB);
 
-    console.log(pointA);
+    const [errMsg, setErrMsg] = useState("");
+    const [isErr, setIsErr] = useState(false);
 
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetPointsDict().then(isSubscribed ? res => {
-            console.log(res);
-            setPoints(res);
-            setFirstPoint(pointA);
-            setSecondPoint(pointB);
-        } : null).catch(err => console.error(err));
+        const retrievePoints = () => {
+            fetchGetPointsDict().then(isSubscribed ? res => {
+                if (res.hasOwnProperty('message')) {
+                    setErrMsg(res['message']);
+                    setIsErr(true);
+                } else {
+                    setErrMsg("");
+                    setIsErr(false);
+                    clearInterval(retrieveTimer);
+                    setPoints(res);
+                    setFirstPoint(pointA);
+                    setSecondPoint(pointB);
+                }
+            } : null).catch(err => console.error(err));
+        };
 
-        return () => (isSubscribed = false);
+        let retrieveTimer = setInterval(retrievePoints, 5000);
+        retrievePoints();
+        return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, []);
 
     const selectPointA = (event) => {
-        console.log(event.target.value);
         setFirstPoint(event.target.value);
     };
 
@@ -48,18 +60,26 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
         setSecondPoint(event.target.value);
     }
 
-    // TODO: liczyć nowy dystans trzeba
     const handleSegmentUpdate = () => {
         fetchEditSegment(pointA, pointB, description, Number.parseInt(calcDistance(points[firstPoint], points[secondPoint])),
             firstPoint, secondPoint)
-            .then(res => updateSegments(res)).then(() => closeForm())
-            .catch(err => console.error(err));
+            .then(res => {
+                if (res.hasOwnProperty['message']) {
+                    setErrMsg(res['message']);
+                    setIsErr(true);
+                } else {
+                    setErrMsg("");
+                    setIsErr(false);
+                    updateSegments(res);
+                    closeForm();
+                }
+            }).catch(err => console.error(err));
     };
 
     return (
         <TableRow>
             <TableCell>
-                <FormControl sx={{ width: '100%' }}>
+                <FormControl sx={{ width: '100%' }} error={isErr}>
                     <InputLabel>Pierwszy punkt</InputLabel>
                     <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
@@ -69,10 +89,11 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
                             </MenuItem>
                         ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
                     </Select>
+                    <Typography color="red" variant="h6">{errMsg}</Typography>
                 </FormControl>
             </TableCell>
             <TableCell>
-                <FormControl sx={{ width: '100%' }}>
+                <FormControl sx={{ width: '100%' }} error={isErr}>
                     <InputLabel>Drugi punkt</InputLabel>
                     <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>

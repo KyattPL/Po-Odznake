@@ -6,6 +6,6 @@ export default async function fetchGetPointsDict() {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return null;
+        return err;
     });
 }

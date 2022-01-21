@@ -16,22 +16,6 @@ describe('App.js', () => {
 		render(<App />);
 	});
 
-	test('fetchStatus internal server error (500)', async () => {
-		fetchStatus.mockResolvedValueOnce(null);
-		const spy = jest.spyOn(global.console, 'error');
-
-		render(<App />);
-		await waitFor(() => expect(spy).toHaveBeenCalledWith("NIE UDAŁO SIĘ POBRAĆ STANU SESJI"));
-	});
-
-	test('fetchStatus throws an error', async () => {
-		fetchStatus.mockRejectedValueOnce("err");
-		const spy = jest.spyOn(global.console, 'error');
-
-		render(<App />);
-		await waitFor(() => expect(spy).toHaveBeenCalledWith("err"));
-	});
-
 	test('fetchStatus returns None id', async () => {
 		fetchStatus.mockResolvedValueOnce({ "user_id": "None" });
 

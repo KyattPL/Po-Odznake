@@ -21,11 +21,20 @@ function SaveSegmentModal({ shouldShow, closeModal, pointA, pointB }) {
 
     const [description, setDescription] = useState("");
     const [isToastOpen, setIsToastOpen] = useState(false);
+    const [errMsg, setErrMsg] = useState("");
+    const [showErr, setShowErr] = useState("");
 
     const handleSaveRoute = () => {
-        fetchAddNewSegment(description, Number.parseInt(calcDistance(pointA, pointB)), pointA['id'], pointB['id']).then(() => {
-            closeModal();
-            setIsToastOpen(true);
+        fetchAddNewSegment(description, Number.parseInt(calcDistance(pointA, pointB)), pointA['id'], pointB['id']).then((res) => {
+            if (res.hasOwnProperty('message')) {
+                setErrMsg(res['message']);
+                setShowErr(true);
+            } else {
+                setErrMsg("");
+                setShowErr(false);
+                setIsToastOpen(true);
+                closeModal();
+            }
         }).catch(err => console.error(err));
     };
 
@@ -45,13 +54,14 @@ function SaveSegmentModal({ shouldShow, closeModal, pointA, pointB }) {
                             Wprowadź opis odcinka
                         </Typography>
                         <TextField multiline value={description} onChange={(event) => setDescription(event.target.value)}
-                            sx={{ width: '100%' }} label="Opis" />
+                            sx={{ width: '100%' }} label="Opis" error={showErr} />
                         <Button variant="contained" className="save-route-confirm" onClick={handleSaveRoute}>
                             Zapisz
                         </Button>
                         <Button variant="contained" onClick={closeModal} className="save-route-cancel">
                             Anuluj
                         </Button>
+                        <Typography color="red" variant="h6">{errMsg}</Typography>
                     </Container>
                 </Fade>
             </Modal>

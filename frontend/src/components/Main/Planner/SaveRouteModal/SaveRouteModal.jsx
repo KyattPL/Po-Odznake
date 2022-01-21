@@ -15,15 +15,20 @@ import fetchAddNewRoute from "../../../../utils/fetchAddNewRoute";
 
 import "../../../../styles/Main/Planner/save_route_modal.css";
 
-// TODO: Toast "Wystąpił błąd przy zapisywaniu trasy" + to samo dla odcinka
 function SaveRouteModal({ shouldShow, closeModal, points }) {
 
     const [isToastOpen, setIsToastOpen] = useState(false);
+    const [errMsg, setErrMsg] = useState("");
 
     const handleSaveRoute = () => {
-        fetchAddNewRoute(points).then(() => {
-            closeModal();
-            setIsToastOpen(true);
+        fetchAddNewRoute(points).then(res => {
+            if (res.hasOwnProperty('message')) {
+                setErrMsg(res['message']);
+            } else {
+                setErrMsg("");
+                setIsToastOpen(true);
+                closeModal();
+            }
         }).catch(err => console.error(err));
     };
 
@@ -48,6 +53,7 @@ function SaveRouteModal({ shouldShow, closeModal, points }) {
                         <Button variant="contained" onClick={closeModal} className="save-route-cancel">
                             Nie
                         </Button>
+                        <Typography color="red" variant="h6">{errMsg}</Typography>
                     </Container>
                 </Fade>
             </Modal>

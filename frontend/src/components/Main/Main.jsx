@@ -17,10 +17,15 @@ function Main({ isLoggedIn }) {
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetPoints().then(res => isSubscribed ? setPoints(res) : null)
-            .catch(err => console.error(err));
+        const retrievePoints = () => {
+            fetchGetPoints().then(res => isSubscribed ? setPoints(res) : null)
+                .then(() => clearInterval(pointRetriever))
+                .catch(() => console.error("NIE UDAŁO SIĘ WCZYTAĆ LISTY PUNKTÓW"));
+        };
 
-        return () => (isSubscribed = false);
+        const pointRetriever = setInterval(retrievePoints, 5000);
+        retrievePoints();
+        return () => { isSubscribed = false; clearInterval(pointRetriever) };
     }, []);
 
     return (

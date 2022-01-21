@@ -13,6 +13,7 @@ import Select from "@mui/material/Select";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from "@mui/icons-material/Done";
@@ -30,14 +31,30 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
     const [endDate, setEndDate] = useState(new Date());
     const [selectedTrip, setSelectedTrip] = useState('');
 
+    const [errMsg, setErrMsg] = useState("");
+    const [showErr, setShowErr] = useState(false);
+
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetTrips().then(res => isSubscribed ? setTrips(res) : null)
-            .then(() => isSubscribed ? setSelectedTrip(tripId) : null)
-            .catch(err => console.error(err));
+        const retrieveTrips = () => {
+            fetchGetTrips().then(isSubscribed ? res => {
+                if (res.hasOwnProperty('message')) {
+                    setErrMsg(res['message']);
+                    setShowErr(true);
+                } else {
+                    setErrMsg("");
+                    setShowErr(false);
+                    clearInterval(retrieveTimer);
+                    setTrips(res);
+                    setSelectedTrip(tripId);
+                }
+            } : null).catch(err => console.error(err));
+        }
 
-        return () => (isSubscribed = false);
+        let retrieveTimer = setInterval(retrieveTrips, 5000);
+        retrieveTrips();
+        return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, [tripId]);
 
     const selectTrip = (event) => {
@@ -46,8 +63,16 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
 
     const handleEntryUpdate = () => {
         fetchChangeEntry(beginDate, endDate, tripId, selectedTrip).then(res => {
-            updateEntries(res);
-        }).then(() => closeForm()).catch(err => console.error(err));
+            if (res.hasOwnProperty('message')) {
+                setErrMsg(res['message']);
+                setShowErr(true);
+            } else {
+                setErrMsg("");
+                setShowErr(false);
+                updateEntries(res);
+                closeForm();
+            }
+        }).catch(err => console.error(err));
     };
 
     return (
@@ -65,7 +90,7 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
                 </LocalizationProvider>
             </TableCell>
             <TableCell colSpan={3}>
-                <FormControl sx={{ width: '100%' }}>
+                <FormControl sx={{ width: '100%' }} error={showErr}>
                     <InputLabel>Wycieczka</InputLabel>
                     <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
                         MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
@@ -75,6 +100,7 @@ function EditBookEntryForm({ closeForm, tripId, updateEntries }) {
                             </MenuItem>
                         ) : <MenuItem>CANT LOAD TRIPS</MenuItem>}
                     </Select>
+                    <Typography color="red" variant="h6">{errMsg}</Typography>
                 </FormControl>
             </TableCell>
             <TableCell align="center">

@@ -17,10 +17,8 @@ function App() {
                 if (res['user_id'] !== 'None') {
                     setIsLoggedIn(true);
                 }
-            } else {
-                console.error("NIE UDAŁO SIĘ POBRAĆ STANU SESJI");
             }
-        }).catch(err => console.error(err));
+        }).catch(err => console.error("NIE UDAŁO SIĘ POBRAĆ STANU SESJI!"));
     }, []);
 
     return (

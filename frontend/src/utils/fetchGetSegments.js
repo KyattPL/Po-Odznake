@@ -6,6 +6,6 @@ export default async function fetchGetSegments() {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return null;
+        return err;
     });
 }

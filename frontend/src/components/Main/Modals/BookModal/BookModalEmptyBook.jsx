@@ -31,6 +31,9 @@ function BookModalEmptyBook({ updateEntries }) {
     const [beginDate, setBeginDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
+    const [errMsg, setErrMsg] = useState("");
+    const [showErr, setShowErr] = useState(false);
+
     const selectTrip = (event) => {
         setSelectedTrip(event.target.value);
     };
@@ -38,16 +41,36 @@ function BookModalEmptyBook({ updateEntries }) {
     useEffect(() => {
         let isSubscribed = true;
 
-        fetchGetTrips().then(res => isSubscribed ? setTrips(res) : null)
-            .catch(err => console.error(err));
+        const retrieveTrips = () => {
+            fetchGetTrips().then(isSubscribed ? res => {
+                if (res.hasOwnProperty('message')) {
+                    setErrMsg(res['message']);
+                    setShowErr(true);
+                } else {
+                    setErrMsg("");
+                    setShowErr(false);
+                    clearInterval(retrieveTimer);
+                    setTrips(res);
+                }
+            } : null).catch(err => console.error(err));
+        };
 
-        return () => (isSubscribed = false);
+        let retrieveTimer = setInterval(retrieveTrips, 5000);
+        retrieveTrips();
+        return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, []);
 
     const handleAddEntry = () => {
         if (isFormVisible) {
             fetchAddNewEntry(beginDate, endDate, selectedTrip).then(res => {
-                updateEntries(res);
+                if (res.hasOwnProperty('message')) {
+                    setErrMsg(res['message']);
+                    setShowErr(true);
+                } else {
+                    setErrMsg("");
+                    setShowErr(false);
+                    updateEntries(res);
+                }
             }).catch(err => console.error(err));
         } else {
             setIsFormVisible(true);
@@ -74,7 +97,7 @@ function BookModalEmptyBook({ updateEntries }) {
                         renderInput={(params) => <TextField {...params} variant="standard" label="Data zakończenia" />} />
                 </LocalizationProvider>
             </Box>
-            <FormControl className={"empty-book-trip-list " + displayClass}>
+            <FormControl className={"empty-book-trip-list " + displayClass} error={showErr}>
                 <InputLabel>Wycieczka</InputLabel>
                 <Select value={selectedTrip} onChange={selectTrip} label="Wycieczka"
                     MenuProps={{ PaperProps: { style: { maxHeight: '150px', maxWidth: '1200px', width: '50vw' } } }}>
@@ -84,6 +107,7 @@ function BookModalEmptyBook({ updateEntries }) {
                         </MenuItem>
                     ) : <MenuItem>CANT LOAD TRIPS</MenuItem>}
                 </Select>
+                <Typography color="red" variant="h6">{errMsg}</Typography>
             </FormControl>
             <Button variant="contained" className="empty-book-add-button" onClick={handleAddEntry}>
                 Dodaj wpis

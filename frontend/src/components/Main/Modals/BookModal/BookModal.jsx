@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Fade from "@mui/material/Fade";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -19,15 +20,31 @@ function BookModal({ shouldShow, closeModal }) {
     const [isEmpty, setIsEmpty] = useState(true);
     const [entries, setEntries] = useState([]);
 
+    const [errMsg, setErrMsg] = useState("");
+
     useEffect(() => {
-        fetchGetUserEntries().then((res) => {
-            setEntries(res);
-            if (res.length !== 0) {
-                setIsEmpty(false);
-            } else {
-                setIsEmpty(true);
-            }
-        }).catch(err => console.error(err));
+        let isSubscribed = true;
+
+        const retrieveUserEntries = () => {
+            fetchGetUserEntries().then(isSubscribed ? (res) => {
+                if (res.hasOwnProperty('message')) {
+                    setErrMsg(res['message']);
+                } else {
+                    setErrMsg("");
+                    setEntries(res);
+                    clearInterval(retrieveTimer);
+                    if (res.length !== 0) {
+                        setIsEmpty(false);
+                    } else {
+                        setIsEmpty(true);
+                    }
+                }
+            } : null).catch(err => console.error(err));
+        };
+
+        let retrieveTimer = setInterval(retrieveUserEntries, 5000);
+        retrieveUserEntries();
+        return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, []);
 
     const updateEntries = (newEntries) => {
@@ -51,6 +68,7 @@ function BookModal({ shouldShow, closeModal }) {
                         <CancelIcon className="close-modal-icon" />
                     </IconButton>
                     {isEmpty ? <BookModalEmptyBook updateEntries={updateEntries} /> : <BookModalTable entries={entries} updateEntries={updateEntries} />}
+                    <Typography color="red" variant="h6">{errMsg}</Typography>
                 </Container>
             </Fade>
         </Modal>
