@@ -14,6 +14,6 @@ export default async function fetchAddNewEntry(startDate, endDate, tripId) {
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return null;
+        return err;
     });
 }

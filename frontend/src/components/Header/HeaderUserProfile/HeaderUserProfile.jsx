@@ -25,7 +25,7 @@ function HeaderUserProfile({ displayModal, isLoggedIn }) {
                 </Tooltip>
                 :
                 <Button className="header-button header-button-box" onClick={showLoginModal}>
-                    <Typography variant="h6">
+                    <Typography variant="h6" data-testid="loginButton">
                         Zaloguj się
                     </Typography>
                 </Button>
