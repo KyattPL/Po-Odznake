@@ -8,6 +8,6 @@ export default async function fetchAddNewSegment(desc, dist, pointAId, pointBId)
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return null;
+        return err;
     });
 }

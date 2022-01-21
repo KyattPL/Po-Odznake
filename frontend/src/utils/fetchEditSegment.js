@@ -10,6 +10,6 @@ export default async function fetchEditSegment(pointAId, pointBId, newDesc, dist
         }
     }).then(res => res.json()).catch(err => {
         console.error(err);
-        return null;
+        return err;
     });
 }
