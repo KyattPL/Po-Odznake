@@ -1,7 +1,9 @@
+import { useState } from 'react';
+
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneIcon from "@mui/icons-material/Done";
@@ -12,10 +14,17 @@ import "../../../../styles/Main/Modal/delete_book_entry.css";
 
 function DeleteBookEntry({ closeForm, tripId, updateEntries }) {
 
+    const [errMsg, setErrMsg] = useState("");
+
     const deleteEntry = () => {
         fetchDeleteEntry(tripId).then(res => {
-            updateEntries(res);
-            closeForm();
+            if (res.hasOwnProperty('message')) {
+                setErrMsg(res['message']);
+            } else {
+                setErrMsg("");
+                updateEntries(res);
+                closeForm();
+            }
         }).catch(err => console.error(err));
     };
 
@@ -31,6 +40,7 @@ function DeleteBookEntry({ closeForm, tripId, updateEntries }) {
                 <Button variant="contained" className="cancel-delete-be-button" onClick={closeForm}>
                     <CancelIcon />
                 </Button>
+                <Typography color="red" variant="h6">{errMsg}</Typography>
             </TableCell>
         </TableRow>
     );

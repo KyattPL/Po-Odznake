@@ -45,23 +45,4 @@ describe('AddBookEntryForm.jsx', () => {
             await waitFor(() => expect(consoleSpy).toHaveBeenCalledWith("500"));
         });
     });
-
-    test('fetchGetTrips returned null', async () => {
-        fetchGetTrips.mockResolvedValueOnce(null);
-        const mockSetState = jest.fn();
-        const useState = (state) => [state, mockSetState];
-        jest.spyOn(React, 'useState').mockImplementationOnce(useState);
-
-        await act(async () => {
-            render(<table>
-                <tbody>
-                    <tr>
-                        <AddBookEntryForm />
-                    </tr>
-                </tbody>
-            </table>);
-
-            await waitFor(() => expect(mockSetState).toHaveBeenCalledWith(null));
-        });
-    });
 });

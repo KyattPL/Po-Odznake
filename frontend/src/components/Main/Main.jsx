@@ -16,18 +16,16 @@ function Main({ isLoggedIn }) {
 
     useEffect(() => {
         let isSubscribed = true;
-        let isRetrieved = false;
-        
+
         const retrievePoints = () => {
-            fetchGetPoints().then(res => isSubscribed ? {
-                setPoints(res);
-                isRetrieved = true;
-            } : null).catch(() => console.error("NIE UDAŁO SIĘ WCZYTAĆ LISTY PUNKTÓW"));
+            fetchGetPoints().then(res => isSubscribed ? setPoints(res) : null)
+                .then(() => clearInterval(pointRetriever))
+                .catch(() => console.error("NIE UDAŁO SIĘ WCZYTAĆ LISTY PUNKTÓW"));
         };
 
-        setTimeout();
-
-        return () => (isSubscribed = false);
+        const pointRetriever = setInterval(retrievePoints, 5000);
+        retrievePoints();
+        return () => { isSubscribed = false; clearInterval(pointRetriever) };
     }, []);
 
     return (
