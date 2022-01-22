@@ -47,10 +47,10 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
             } : null).catch(err => console.error(err));
         };
 
-        let retrieveTimer = setInterval(retrievePoints, 5000);
+        let retrieveTimer = setInterval(retrievePoints, 15000);
         retrievePoints();
         return () => { isSubscribed = false; clearInterval(retrieveTimer) };
-    }, []);
+    }, [pointA, pointB]);
 
     const selectPointA = (event) => {
         setFirstPoint(event.target.value);

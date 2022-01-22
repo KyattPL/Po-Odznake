@@ -42,10 +42,10 @@ function BookModal({ shouldShow, closeModal }) {
             } : null).catch(err => console.error(err));
         };
 
-        let retrieveTimer = setInterval(retrieveUserEntries, 5000);
+        let retrieveTimer = setInterval(retrieveUserEntries, 15000);
         retrieveUserEntries();
         return () => { isSubscribed = false; clearInterval(retrieveTimer) };
-    }, []);
+    }, [shouldShow]);
 
     const updateEntries = (newEntries) => {
         setEntries(newEntries);
