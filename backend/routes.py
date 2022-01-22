@@ -147,7 +147,7 @@ def edit_segment():
         return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
     except sqlalchemy.exc.OperationalError:
         return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
-    except sqlalchemy.exc.IntegrityError:
+    except sqlalchemy.exc.ArgumentError:
         return jsonify({"message":"Taki odcinek już istnieje w systemie"}), 400 
 
 @routes.route("/get_user_entries", methods = ['GET'])

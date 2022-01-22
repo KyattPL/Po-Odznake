@@ -40,8 +40,8 @@ class DBAccess():
                     and_( Segments.starting_point_id == point_A_id, Segments.ending_point_id == point_B_id), 
                     and_( Segments.ending_point_id == point_A_id, Segments.starting_point_id == point_B_id))
             ).all()
-            if not the_same_segs:
-                raise sqlalchemy.exc.IntegrityError("This segment is already in database")
+            if the_same_segs:
+                raise sqlalchemy.exc.ArgumentError("This segment is already in database")
             seg_A_B = Segments(points, description, True, distance, point_A_id, point_B_id, usr_id)
             seg_B_A = Segments(points, description, True, distance, point_B_id, point_A_id, usr_id)
             db.session.add(seg_A_B)
@@ -84,8 +84,8 @@ class DBAccess():
                     and_( Segments.starting_point_id == new_point_A_id, Segments.ending_point_id == new_point_B_id), 
                     and_( Segments.ending_point_id == new_point_A_id, Segments.starting_point_id == new_point_B_id))
             ).all()
-            if not the_same_segs:
-                raise sqlalchemy.exc.IntegrityError("This segment is already in database")
+            if the_same_segs:
+                raise sqlalchemy.exc.ArgumentError("This segment is already in database")
             point_A = GeoPoints.query.filter(GeoPoints.id == point_A_id).first()
             point_B = GeoPoints.query.filter(GeoPoints.id == point_B_id).first()
             points = int(distance / 1000) + abs(point_A.height - point_B.height) // 100
