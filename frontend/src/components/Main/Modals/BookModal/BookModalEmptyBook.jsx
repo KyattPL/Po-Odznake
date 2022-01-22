@@ -55,7 +55,7 @@ function BookModalEmptyBook({ updateEntries }) {
             } : null).catch(err => console.error(err));
         };
 
-        let retrieveTimer = setInterval(retrieveTrips, 5000);
+        let retrieveTimer = setInterval(retrieveTrips, 15000);
         retrieveTrips();
         return () => { isSubscribed = false; clearInterval(retrieveTimer) };
     }, []);

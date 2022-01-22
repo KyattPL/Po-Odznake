@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -19,6 +19,10 @@ function SaveRouteModal({ shouldShow, closeModal, points }) {
 
     const [isToastOpen, setIsToastOpen] = useState(false);
     const [errMsg, setErrMsg] = useState("");
+
+    useEffect(() => {
+        setErrMsg("");
+    }, [shouldShow]);
 
     const handleSaveRoute = () => {
         fetchAddNewRoute(points).then(res => {
