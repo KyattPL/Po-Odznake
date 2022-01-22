@@ -111,7 +111,7 @@ def add_new_route():
             pt_n_1 += 1 
         
         DBAccess.add_route(segments_list)
-        return jsonify({"message":"Dodano odcinki do trasy"}), 200
+        return jsonify({"status":"Dodano odcinki do trasy"}), 200
     except sqlalchemy.exc.OperationalError:
         return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
