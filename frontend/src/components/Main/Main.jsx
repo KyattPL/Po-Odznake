@@ -23,7 +23,7 @@ function Main({ isLoggedIn }) {
                 .catch(() => console.error("NIE UDAŁO SIĘ WCZYTAĆ LISTY PUNKTÓW"));
         };
 
-        const pointRetriever = setInterval(retrievePoints, 5000);
+        const pointRetriever = setInterval(retrievePoints, 15000);
         retrievePoints();
         return () => { isSubscribed = false; clearInterval(pointRetriever) };
     }, []);

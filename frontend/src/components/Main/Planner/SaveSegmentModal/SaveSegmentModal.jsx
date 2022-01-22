@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -23,6 +23,11 @@ function SaveSegmentModal({ shouldShow, closeModal, pointA, pointB }) {
     const [isToastOpen, setIsToastOpen] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const [showErr, setShowErr] = useState("");
+
+    useEffect(() => {
+        setErrMsg("");
+        setShowErr(false);
+    }, [shouldShow]);
 
     const handleSaveRoute = () => {
         fetchAddNewSegment(description, Number.parseInt(calcDistance(pointA, pointB)), pointA['id'], pointB['id']).then((res) => {

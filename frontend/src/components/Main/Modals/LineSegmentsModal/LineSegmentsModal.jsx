@@ -22,6 +22,7 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
     const [errMsg, setErrMsg] = useState("");
 
     useEffect(() => {
+
         let isSubscribed = true;
 
         const retrieveUserSegments = () => {
@@ -43,10 +44,10 @@ function LineSegmentsModal({ shouldShow, closeModal }) {
             }).catch(err => console.error(err));
         };
 
-        let retrieveTimer = setInterval(retrieveUserSegments, 5000);
+        let retrieveTimer = setInterval(retrieveUserSegments, 15000);
         retrieveUserSegments();
         return () => { isSubscribed = false; clearInterval(retrieveTimer) };
-    }, []);
+    }, [shouldShow]);
 
     const updateSegments = (newSegments) => {
         setSegments(newSegments);
