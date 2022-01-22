@@ -64,7 +64,7 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
         fetchEditSegment(pointA, pointB, description, Number.parseInt(calcDistance(points[firstPoint], points[secondPoint])),
             firstPoint, secondPoint)
             .then(res => {
-                if (res.hasOwnProperty['message']) {
+                if (res.hasOwnProperty('message')) {
                     setErrMsg(res['message']);
                     setIsErr(true);
                 } else {
@@ -77,49 +77,54 @@ function EditLineSegment({ closeForm, updateSegments, pointA, pointB }) {
     };
 
     return (
-        <TableRow>
-            <TableCell>
-                <FormControl sx={{ width: '100%' }} error={isErr}>
-                    <InputLabel>Pierwszy punkt</InputLabel>
-                    <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt"
-                        MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
-                        {points !== null ? Object.keys(points).map(point =>
-                            <MenuItem key={points[point]['id']} value={points[point]['id']}>
-                                {points[point]['name']}
-                            </MenuItem>
-                        ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
-                    </Select>
-                    <Typography color="red" variant="h6">{errMsg}</Typography>
-                </FormControl>
-            </TableCell>
-            <TableCell>
-                <FormControl sx={{ width: '100%' }} error={isErr}>
-                    <InputLabel>Drugi punkt</InputLabel>
-                    <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt"
-                        MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
-                        {points !== null ? Object.keys(points).map(point =>
-                            <MenuItem key={points[point]['id']} value={points[point]['id']}>
-                                {points[point]['name']}
-                            </MenuItem>
-                        ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
-                    </Select>
-                </FormControl>
-            </TableCell>
-            <TableCell align="center" colSpan={3}>
-                <TextField multiline value={description} onChange={(event) => setDescription(event.target.value)}
-                    sx={{ width: '100%' }} label="Opis" />
-            </TableCell>
-            <TableCell align="center">
-                <Button variant="contained" className="confirm-edit-be-button" onClick={handleSegmentUpdate}>
-                    <DoneIcon />
-                </Button>
-            </TableCell>
-            <TableCell align="center">
-                <Button variant="contained" className="cancel-edit-be-button" onClick={closeForm}>
-                    <CancelIcon />
-                </Button>
-            </TableCell>
-        </TableRow>
+        <>
+            <TableRow>
+                <TableCell>
+                    <FormControl sx={{ width: '100%' }} error={isErr}>
+                        <InputLabel>Pierwszy punkt</InputLabel>
+                        <Select value={firstPoint} onChange={selectPointA} label="Pierwszy punkt"
+                            MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
+                            {points !== null ? Object.keys(points).map(point =>
+                                <MenuItem key={points[point]['id']} value={points[point]['id']}>
+                                    {points[point]['name']}
+                                </MenuItem>
+                            ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
+                        </Select>
+                    </FormControl>
+                </TableCell>
+                <TableCell>
+                    <FormControl sx={{ width: '100%' }} error={isErr}>
+                        <InputLabel>Drugi punkt</InputLabel>
+                        <Select value={secondPoint} onChange={selectPointB} label="Drugi punkt"
+                            MenuProps={{ PaperProps: { style: { maxHeight: '150px' } } }}>
+                            {points !== null ? Object.keys(points).map(point =>
+                                <MenuItem key={points[point]['id']} value={points[point]['id']}>
+                                    {points[point]['name']}
+                                </MenuItem>
+                            ) : <MenuItem>CANT LOAD POINTS</MenuItem>}
+                        </Select>
+                    </FormControl>
+                </TableCell>
+                <TableCell align="center" colSpan={3}>
+                    <TextField multiline value={description} onChange={(event) => setDescription(event.target.value)}
+                        sx={{ width: '100%' }} label="Opis" />
+                </TableCell>
+                <TableCell align="center">
+                    <Button variant="contained" className="confirm-edit-be-button" onClick={handleSegmentUpdate}>
+                        <DoneIcon />
+                    </Button>
+                </TableCell>
+                <TableCell align="center">
+                    <Button variant="contained" className="cancel-edit-be-button" onClick={closeForm}>
+                        <CancelIcon />
+                    </Button>
+                </TableCell>
+            </TableRow>
+            {isErr ? <TableRow>
+                <TableCell colSpan="7">
+                    <Typography color="red" variant="h6">{errMsg}</Typography></TableCell>
+            </TableRow> : null}
+        </>
     );
 }
 

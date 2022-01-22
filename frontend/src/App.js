@@ -12,13 +12,20 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        fetchStatus().then((res) => {
-            if (res != null) {
-                if (res['user_id'] !== 'None') {
-                    setIsLoggedIn(true);
+        const getStatus = () => {
+            fetchStatus().then((res) => {
+                if (res != null) {
+                    if (res['user_id'] !== 'None') {
+                        setIsLoggedIn(true);
+                    }
+                } else {
+                    setIsLoggedIn(false);
                 }
-            }
-        }).catch(err => console.error("NIE UDAŁO SIĘ POBRAĆ STANU SESJI!"));
+            }).catch(err => console.error("NIE UDAŁO SIĘ POBRAĆ STANU SESJI!"));
+        };
+        getStatus();
+        let intervalTimer = setInterval(getStatus, 30000);
+        return () => { clearInterval(intervalTimer) };
     }, []);
 
     return (

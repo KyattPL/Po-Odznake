@@ -71,7 +71,7 @@ function Planner({ points, setPoints, isLoggedIn }) {
                                 pointA={points[0]} pointB={points[1]} />
                         </>
                         : null}
-                    {isLoggedIn && Array.isArray(points) && points.length >= 2 ?
+                    {isLoggedIn && Array.isArray(points) && points.length >= 3 ?
                         <>
                             <Button variant="contained" className="planner-summary-button" onClick={openRouteModal}>
                                 Zapisz trasę
