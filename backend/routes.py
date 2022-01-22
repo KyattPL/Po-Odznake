@@ -30,7 +30,7 @@ def get_segments():
             segments_list = DBAccess.get_segments(current_user.get_id())
         return jsonify(Schemas.segments_schema.dump(segments_list))
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/get_user_segments", methods = ['GET'])
 @login_required
@@ -40,7 +40,7 @@ def get_user_segments():
         user_segments_list = DBAccess.get_user_segments(user_id)
         return jsonify(Schemas.segments_schema.dump(user_segments_list))
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/get_trips", methods = ['GET'])
 @login_required
@@ -49,7 +49,7 @@ def get_trips():
         trips_list = DBAccess.get_trips()
         return jsonify(Schemas.trips_schema.dump(trips_list))
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/get_points", methods = ['GET'])
 def get_points():
@@ -57,7 +57,7 @@ def get_points():
         points_list = DBAccess.get_points()
         return jsonify(Schemas.points_schema.dump(points_list))
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/get_points_dict", methods = ['GET'])
 def get_points_dict():
@@ -68,7 +68,7 @@ def get_points_dict():
             point_dict_list[f"{point.id}"] = Schemas.point_schema.dump(point)
         return jsonify(point_dict_list)
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/add_new_segment", methods = ['POST'])
 @login_required
@@ -80,13 +80,17 @@ def add_new_segment():
     point_B_id = int(request.json['point_b_id'])
     the_same_point = DBAccess.get_segment(point_A_id, point_B_id)
     if the_same_point != None:
-        return jsonify({"message":"Cannot duplicate segment"}), 400
+        return jsonify({"message":"Nie można duplikować dodanych odcinków"}), 400
+    elif point_A_id == point_B_id:
+        return jsonify({"message":"Ten sam punkt nie może być zarówno początkiem, jak i końcem odcinka"}), 400
     try:
         DBAccess.add_segment(description, distance, point_A_id, point_B_id, user_id)
         user_segments_list = DBAccess.get_user_segments(user_id)
         return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
+    except sqlalchemy.exc.IntegrityError:
+        return jsonify({"message":"Taki odcinek już istnieje w systemie"}), 400
 
 @routes.route("/add_new_route", methods = ['POST'])
 @login_required
@@ -96,20 +100,20 @@ def add_new_route():
     pt_n_1 = 1
     segments_list = []
     if len(points_list) < 3:
-        return jsonify({"status":"Trip must include at least 2 segments"}), 400
+        return jsonify({"message":"Trasa musi składać się z co najmniej dwóch odcinków"}), 400
     try:
         while pt_n_1 != len(points_list):
             segment = DBAccess.get_segment(points_list[pt_n]["id"], points_list[pt_n_1]["id"])
             if segment == None:
-                return jsonify({"status":"Encountered nonexistent segment"}), 400
+                return jsonify({"message":"Napotkano na nieistniejące odcinki"}), 400
             segments_list.append(segment)
             pt_n += 1
             pt_n_1 += 1 
         
         DBAccess.add_route(segments_list)
-        return jsonify({"status":"Added segments to a route"}), 200
+        return jsonify({"message":"Dodano odcinki do trasy"}), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/delete_segment", methods = ['POST'])
 @login_required
@@ -122,7 +126,7 @@ def delete_segment():
         user_segments_list = DBAccess.get_user_segments(user_id)
         return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 
 @routes.route("/edit_segment", methods = ['POST'])
@@ -135,12 +139,16 @@ def edit_segment():
     distance = request.json['distance']
     new_point_A_id = int(request.json['new_point_a_id'])
     new_point_B_id = int(request.json['new_point_b_id'])
+    if new_point_A_id == new_point_B_id:
+        return jsonify({"message":"Ten sam punkt nie może być zarówno początkiem, jak i końcem odcinka"}), 400
     try:
         DBAccess.update_segment(user_id, description, distance, point_A_id, point_B_id, new_point_A_id, new_point_B_id)
         user_segments_list = DBAccess.get_user_segments(user_id)
         return jsonify(Schemas.segments_schema.dump(user_segments_list)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
+    except sqlalchemy.exc.IntegrityError:
+        return jsonify({"message":"Taki odcinek już istnieje w systemie"}), 400 
 
 @routes.route("/get_user_entries", methods = ['GET'])
 @login_required
@@ -152,7 +160,7 @@ def get_user_entries():
         # + str(DBAccess.get_point_by_id(rec[3]).name) + " " + str(DBAccess.get_point_by_id(rec[4]).name)
         return jsonify(Schemas.book_entries_schema.dump(all_user_entries))
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/add_new_entry", methods = ['POST'])
 @login_required
@@ -167,7 +175,11 @@ def add_new_entry():
         user_book_entries = DBAccess.get_user_book_entries(user_id)
         return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
+    except ValueError:
+        return jsonify({"message":"Data początkowa musi być wcześniejsza niż końcowa"}), 400
+    except TypeError:
+        return jsonify({"message":"Podano zły typ danych"}), 400
 
 @routes.route("/change_entry", methods = ['POST'])
 @login_required
@@ -178,13 +190,13 @@ def change_book_entry():
     new_start_date = datetime.strptime(request.json['new_start_date'],'%d.%m.%Y').date()
     new_end_date = datetime.strptime(request.json['new_end_date'],'%d.%m.%Y').date()
     if (new_start_date > new_end_date):
-        return jsonify({"message":"Start date must earlier than end date"}), 400
+        return jsonify({"message":"Data początkowa musi być wcześniejsza niż końcowa"}), 400
     try:
         DBAccess.change_book_entry(user_id, trip_id, new_trip_id, new_start_date, new_end_date)
         user_book_entries = DBAccess.get_user_book_entries(user_id)
         return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/delete_entry", methods = ['POST'])
 @login_required
@@ -196,7 +208,7 @@ def delete_book_entry():
         user_book_entries = DBAccess.get_user_book_entries(user_id)
         return jsonify(Schemas.book_entries_schema.dump(user_book_entries)), 200
     except sqlalchemy.exc.OperationalError:
-        return jsonify({"message":"Database connection error"}), 500
+        return jsonify({"message":"Błąd połączenia z bazą danych"}), 500
 
 @routes.route("/login", methods = ['POST'])
 def login_user():
